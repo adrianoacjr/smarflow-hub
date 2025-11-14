@@ -23,3 +23,6 @@ class UserRepositoryFake(IUserRepository):
 
     def delete(self, user_id: int) -> None:
         self._users = [user for user in self._users if user.id != user_id]
+
+    def get_by_email(self, email: str):
+        return next((user for user in self._users if user.email == email), None)

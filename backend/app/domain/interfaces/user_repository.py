@@ -18,3 +18,7 @@ class IUserRepository(ABC):
     @abstractmethod
     def delete(self, user_id: int) -> None:
         pass
+
+    @abstractmethod
+    def get_by_email(self, email: str) -> Optional[User]:
+        pass
