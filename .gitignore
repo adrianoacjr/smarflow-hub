@@ -1,0 +1,9 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+.venv
+.vscode
+frontend/
+scripts/
+tests/
+__pycache__/
+single_file.py
+*dependency_graph*
