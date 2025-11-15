@@ -44,7 +44,7 @@ class AuthenticateUser:
         if not user:
             return None
 
-        if not bcrypt.checkpw(password.encode("utf-8"), user.password_hash.encode("utf-8")):
+        if not bcrypt.checkpw(password.encode("utf-8"), user.password_hash):
             return None
 
         token = self.token_service.create_access_token(

@@ -1,12 +1,13 @@
-from pydantic import BaseModel, Field
-from datetime import datetime, timezone
+from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional
 
-class User(BaseModel):
-    id: Optional[int] = None
-    name: str = Field(..., min_length=1)
+@dataclass
+class User:
+    name: str
     email: str
     password_hash: str
-    access_level: str = Field(..., pattern="^(admin|user|guest)$")
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    access_level: str
+    created_at: datetime
+    id: Optional[int] = None
     active: bool = True

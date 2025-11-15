@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.post("/users/", response_model=UserResponseDTO)
 def create_user(user_input: UserCreateDTO, create_user_use_case: CreateUser = Depends(di_user.get_create_user_service)):
-    user = create_user_use_case.execute(user_input.name, user_input.email, user_input.password, access_level = user_input.access_level)
+    user = create_user_use_case.execute(user_input.name, user_input.email, user_input.password, access_level = user_input.access_level, created_at = user_input.created_at)
     return UserResponseDTO.from_domain(user)
 
 @router.get("/users/me", response_model=UserResponseDTO)
