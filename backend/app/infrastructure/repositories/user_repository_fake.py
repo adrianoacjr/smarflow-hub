@@ -1,7 +1,7 @@
-from domain.models.user import User
-from domain.interfaces.user_repository import IUserRepository
 from typing import Optional, List
 
+from domain.models.user import User
+from domain.interfaces.user_repository import IUserRepository
 
 class UserRepositoryFake(IUserRepository):
     def __init__(self):

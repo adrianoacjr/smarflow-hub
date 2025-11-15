@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field, EmailStr
 from datetime import datetime, timezone
 from typing import Optional
+
+from pydantic import BaseModel, Field, EmailStr
+
 from domain.models.user import User
 
 class UserCreateDTO(BaseModel):

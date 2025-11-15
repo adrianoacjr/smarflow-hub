@@ -1,18 +1,27 @@
-from presentation.dtos.user_dto import UserCreateDTO, UserResponseDTO
-from presentation.dependencies.di_user import di_user
-from application.user.create_user import CreateUser
-from application.user.get_user import GetUser
-from application.user.get_all_users import GetAllUsers
-from application.user.delete_user import DeleteUser
-from presentation.dependencies.di_auth import get_current_user
+from fastapi import APIRouter, Depends, HTTPException
+
 from domain.models.user import User
-from fastapi import APIRouter, HTTPException, Depends
+
+from presentation.dependencies.di_auth import get_current_user
+from presentation.dependencies.di_user import di_user
+from presentation.dtos.user_dto import UserCreateDTO, UserResponseDTO
+
+from application.user.create_user import CreateUser
+from application.user.delete_user import DeleteUser
+from application.user.get_all_users import GetAllUsers
+from application.user.get_user import GetUser
 
 router = APIRouter()
 
 @router.post("/users/", response_model=UserResponseDTO)
 def create_user(user_input: UserCreateDTO, create_user_use_case: CreateUser = Depends(di_user.get_create_user_service)):
-    user = create_user_use_case.execute(user_input.name, user_input.email, user_input.password, access_level = user_input.access_level, created_at = user_input.created_at)
+    user = create_user_use_case.execute(
+        user_input.name,
+        user_input.email,
+        user_input.password,
+        access_level = user_input.access_level,
+        created_at = user_input.created_at
+    )
     return UserResponseDTO.from_domain(user)
 
 @router.get("/users/me", response_model=UserResponseDTO)

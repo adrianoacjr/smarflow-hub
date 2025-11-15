@@ -1,4 +1,3 @@
-from domain.models.user import User
 from domain.interfaces.user_repository import IUserRepository
 
 class DeleteUser:

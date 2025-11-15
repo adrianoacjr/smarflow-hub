@@ -18,7 +18,6 @@ def login_dependency():
     return authenticate_user_use_case
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    print("asds")
     try:
         email = token_service.verify_access_token(token)
     except Exception:
