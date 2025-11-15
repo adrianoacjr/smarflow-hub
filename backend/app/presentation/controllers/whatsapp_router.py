@@ -1,19 +1,14 @@
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+
 from presentation.dtos.whatsapp_message_dto import whatsappMessageRequest, whatsappMessageResponse
-from application.whatsapp.send_whatsapp_message import SendWhatsappMessage
-from fastapi import APIRouter, HTTPException, Depends
+from presentation.dependencies.di_whatsapp import di_whatsapp
 
 router = APIRouter()
 
+def get_send_uc():
+    return di_whatsapp.get_send_whatsapp_usecase()
+
 @router.post("/whatsapp/send", response_model=whatsappMessageResponse)
-async def send_whatsapp_message(
-    request: whatsappMessageRequest,
-    send_whatsapp_message_use_case: SendWhatsappMessage = Depends()
-):
-    try:
-        success = send_whatsapp_message_use_case.execute(
-            phone_number=request.phone_number,
-            content=request.content
-        )
-        return whatsappMessageResponse(success=success, content=request.content)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+async def send_whatsapp_message(request: whatsappMessageRequest, background_tasks: BackgroundTasks, send_uc = Depends(get_send_uc)):
+    background_tasks.add_task(send_uc.execute, 1, request.phone_number, request.content)
+    return whatsappMessageResponse(success=True, content=request.content)
