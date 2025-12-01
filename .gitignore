@@ -219,3 +219,6 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 >>>>>>> 88a788d9b7d1094d45cb66bc71ced0765b7b1cee
+
+# Node
+node_modules/
