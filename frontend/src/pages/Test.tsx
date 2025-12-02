@@ -6,12 +6,13 @@ export default function TestPage() {
     const [result, setResult] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const backendUrl = import.meta.env.VITE_API_BASE_URL;
 
     const testBackend = async () => {
         setLoading(true);
         try {
             const res = await fetch(`${backendUrl}/health`);
+            console.log(res);
             const data = await res.json();
             setResult(data);
         } catch (error) {
