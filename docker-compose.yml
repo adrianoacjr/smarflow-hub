@@ -6,7 +6,12 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/app:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: always
+    networks:
+      - smartnet
 
   frontend:
     build: ./frontend
@@ -20,7 +25,37 @@ services:
     depends_on:
       - backend
     restart: always
+    networks:
+      - smartnet
 
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=smartbot
+  postgres:
+    image: postgres:16
+    container_name: smartflow_postgres
+    restart: always
+    env_file:
+      - ./docker/postgres/.env.postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - smartnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres_data:
+
+networks:
+  smartnet:
+    name: smartnet
+    driver: bridge
