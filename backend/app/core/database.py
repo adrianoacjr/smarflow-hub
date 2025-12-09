@@ -3,7 +3,7 @@ from core.config import settings
 
 engine = create_async_engine(
     settings.DATABASE_URL,
-    furute=True,
+    future=True,
     echo=True
 )
 
