@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
+
 from infrastructure.orm.base import Base
 
 class UserORM(Base):
@@ -20,3 +22,5 @@ class UserORM(Base):
     )
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     active = Column(bool, nullable=False)
+
+    messages = relationship("MessageORM", back_populates="user")

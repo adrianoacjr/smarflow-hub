@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+
 from infrastructure.orm.base import Base
 
 class MessageORM(Base):
@@ -38,5 +39,5 @@ class MessageORM(Base):
         )
     )
 
-    user = relationship("UserORM", backref="messages")
-    customer = relationship("CustomerORM", backref="messages")
+    user = relationship("UserORM", back_populates="messages")
+    customer = relationship("CustomerORM", back_populates="messages")
