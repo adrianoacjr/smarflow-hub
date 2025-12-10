@@ -22,4 +22,8 @@ class UserResponseDTO(BaseModel):
 
     @staticmethod
     def from_domain(user: User):
-        return UserResponseDTO(id=user.id, name=user.name, email=user.email)
+        return UserResponseDTO(
+            id=user.id,
+            name=user.name,
+            email=user.email
+        )

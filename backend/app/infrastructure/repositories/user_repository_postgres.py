@@ -1,6 +1,6 @@
 from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from domain.models.user import User
 from domain.interfaces.user_repository import IUserRepository
@@ -37,3 +37,9 @@ class UserRepositoryPostgres(IUserRepository):
         result = await self.session.execute(select(UserORM))
         orms = result.scalars().all()
         return [UserMapper.orm_to_domain(o) for o in orms]
+    
+    async def delete(self, user_id: int) -> None:
+        await self.session.execute(
+            delete(UserORM).where(UserORM.id == user_id)
+        )
+        await self.session.commit()
