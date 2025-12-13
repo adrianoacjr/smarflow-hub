@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -16,11 +16,11 @@ class UserORM(Base):
             "admin",
             "user",
             "guest",
-            name="access_level_enum"
+            name="user_access_level_enum"
         ),
         nullable=False
     )
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    active = Column(bool, nullable=False)
+    active = Column(Boolean, nullable=False)
 
     messages = relationship("MessageORM", back_populates="user")

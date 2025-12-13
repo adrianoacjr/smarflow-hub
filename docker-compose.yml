@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     container_name: smartflow-backend
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
@@ -15,11 +17,31 @@ services:
     networks:
       - smartnet
 
+  alembic:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: smartflow-alembic
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/app:/app
+      - ./backend/migrations:/app/migrations
+      - ./backend/alembic.ini:/app/alembic.ini
+    working_dir: /app
+    command: alembic upgrade head
+    restart: "no"
+    networks:
+      - smartnet
+
   frontend:
     build: ./frontend
     container_name: smartflow-frontend
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
     ports:
       - "5173:5173"
     volumes:
@@ -36,10 +58,8 @@ services:
     image: postgres:16
     container_name: smartflow_postgres
     restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:

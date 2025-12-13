@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Enum
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -15,7 +15,7 @@ class MessageORM(Base):
         Enum(
             "inbound",
             "outbound",
-            name="direction_enum"
+            name="message_direction_enum"
         ),
         nullable=False
     )
@@ -24,20 +24,21 @@ class MessageORM(Base):
             "whatsapp",
             "instagram",
             "other",
-            name="source_enum"
+            name="message_source_enum"
         ),
         nullable=False
     )
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    automated = Column(bool, nullable=False)
+    automated = Column(Boolean, nullable=False)
     status = Column(
         Enum(
             "sent",
             "delivered",
             "read",
-            "failed"
+            "failed",
+            name="message_status_enum"
         )
     )
 
-    user = relationship("UserORM", back_populates="messages")
-    customer = relationship("CustomerORM", back_populates="messages")
+    users = relationship("UserORM", back_populates="messages")
+    customers = relationship("CustomerORM", back_populates="messages")
