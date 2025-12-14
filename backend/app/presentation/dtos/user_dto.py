@@ -25,5 +25,8 @@ class UserResponseDTO(BaseModel):
         return UserResponseDTO(
             id=user.id,
             name=user.name,
-            email=user.email
+            email=user.email,
+            access_level=user.access_level,
+            created_at=user.created_at,
+            active=user.active
         )

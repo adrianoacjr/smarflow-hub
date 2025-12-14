@@ -12,7 +12,7 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> List[User]:
+    def list(self) -> List[User]:
         pass
 
     @abstractmethod

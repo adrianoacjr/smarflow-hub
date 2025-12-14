@@ -8,10 +8,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from infrastructure.orm.base import *
 from infrastructure.orm.base import Base
-from infrastructure.orm import user_orm
-from infrastructure.orm import message_orm
-from infrastructure.orm import customer_orm
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 

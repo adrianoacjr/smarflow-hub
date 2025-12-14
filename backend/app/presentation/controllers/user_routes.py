@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.models.user import User
-
-from presentation.dependencies.di_auth import get_current_user
 from presentation.dependencies.di_user import di_user
 from presentation.dtos.user_dto import UserCreateDTO, UserResponseDTO
 
@@ -11,11 +9,14 @@ from application.user.delete_user import DeleteUser
 from application.user.get_all_users import GetAllUsers
 from application.user.get_user import GetUser
 
+from core.database import get_session
+
 router = APIRouter()
 
 @router.post("/users/", response_model=UserResponseDTO)
-def create_user(user_input: UserCreateDTO, create_user_use_case: CreateUser = Depends(di_user.get_create_user_service)):
-    user = create_user_use_case.execute(
+async def create_user(user_input: UserCreateDTO, session: AsyncSession = Depends(get_session)):
+    service: CreateUser = di_user.get_create_user_service(session)
+    user = await service.execute(
         user_input.name,
         user_input.email,
         user_input.password,
@@ -24,23 +25,22 @@ def create_user(user_input: UserCreateDTO, create_user_use_case: CreateUser = De
     )
     return UserResponseDTO.from_domain(user)
 
-@router.get("/users/me", response_model=UserResponseDTO)
-def get_me(current_user: User = Depends(get_current_user)):
-    return UserResponseDTO.from_domain(current_user)
-
 @router.get("/users/{user_id}", response_model=UserResponseDTO)
-def get_user(user_id: int, get_user_use_case: GetUser = Depends(di_user.get_get_user_service)):
-    user = get_user_use_case.execute(user_id)
+def get_user(user_id: int, session: AsyncSession = Depends(get_session)):
+    service: GetUser = di_user.get_get_user_service(session)
+    user = service.execute(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return UserResponseDTO.from_domain(user)
 
 @router.get("/users/", response_model=list[UserResponseDTO])
-def get_all_users(get_all_users_use_case: GetAllUsers = Depends(di_user.get_get_all_users_service)):
-    users = get_all_users_use_case.execute()
+def get_all_users(session: AsyncSession = Depends(get_session)):
+    service: GetAllUsers = di_user.get_get_all_users_service(session)
+    users = service.execute()
     return [UserResponseDTO.from_domain(user) for user in users]
 
 @router.delete("/users/{user_id}", status_code=204)
-def delete_user(user_id: int, delete_user_use_case: DeleteUser = Depends(di_user.get_delete_user_service)):
-    delete_user_use_case.execute(user_id)
+def delete_user(user_id: int, session: AsyncSession = Depends(get_session)):
+    service: DeleteUser = di_user.get_delete_user_service(session)
+    service.execute(user_id)
     return None

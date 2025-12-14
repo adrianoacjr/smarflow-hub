@@ -23,4 +23,4 @@ class UserORM(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     active = Column(Boolean, nullable=False)
 
-    messages = relationship("MessageORM", back_populates="user")
+    messages = relationship("MessageORM", back_populates="users")
