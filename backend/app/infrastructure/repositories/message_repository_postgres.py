@@ -12,7 +12,7 @@ class MessageRepositoryPostgres(IMessageRepository):
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def save(self, message: Message) -> Message:
+    async def create(self, message: Message) -> Message:
         orm_message = MessageMapper.domain_to_orm(message)
         self.session.add(orm_message)
         await self.session.commit()

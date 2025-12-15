@@ -4,7 +4,7 @@ from infrastructure.orm.user_orm import UserORM
 class UserMapper:
     @staticmethod
     def orm_to_domain(orm: UserORM) -> User:
-        return User(
+        domain = User(
             id=orm.id,
             name=orm.name,
             email=orm.email,
@@ -13,6 +13,7 @@ class UserMapper:
             created_at=orm.created_at,
             active=orm.active
         )
+        return domain
     
     @staticmethod
     def domain_to_orm(domain: User) -> UserORM:

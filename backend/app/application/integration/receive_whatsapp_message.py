@@ -4,8 +4,8 @@ from domain.models.message import Message
 from domain.interfaces.message_repository import IMessageRepository
 
 class ReceiveWhatsAppMessage:
-    def __init__(self, message_repo: IMessageRepository):
-        self.message_repo = message_repo
+    def __init__(self, repo: IMessageRepository):
+        self.repo = repo
 
     async def execute(self, user_id: int, customer_id: int, content: str) -> Message:
         message = Message(
@@ -19,4 +19,4 @@ class ReceiveWhatsAppMessage:
             status="received"
         )
 
-        return await self.message_repo.save(message)
+        return await self.repo.create(message)

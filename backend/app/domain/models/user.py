@@ -9,5 +9,5 @@ class User:
     password_hash: str
     access_level: str
     created_at: datetime
-    id: Optional[int] = None
     active: bool = True
+    id: Optional[int] = None

@@ -1,13 +1,13 @@
-from pydantic import BaseModel
-from typing import Optional, Field, emailstr
-from datetime import datetime, timezone
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Optional
 
-class Customer(BaseModel):
-    id: Optional[int] = None
-    user_id: int
-    name: str = Field(..., min_length=1)
-    email: emailstr
+@dataclass
+class Customer:
+    name: str
+    email: Optional[str] = None
     phone: Optional[str] = None
-    origin: str = Field(..., pattern="^(whatsapp|instagram|manual|other)$")
-    tags: Optional[list[str]] = []
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    origin: str
+    tags: list[str] = field(default_factory=list)
+    created_at: datetime
+    id: Optional[int] = None

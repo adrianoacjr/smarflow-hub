@@ -4,7 +4,7 @@ from typing import Optional, List
 
 class IMessageRepository(ABC):
     @abstractmethod
-    def save(self, message: Message) -> Message:
+    def create(self, message: Message) -> Message:
         pass
 
     @abstractmethod

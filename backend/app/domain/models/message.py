@@ -4,7 +4,6 @@ from typing import Optional
 
 @dataclass
 class Message:
-    user_id: int
     customer_id: int
     content: str
     direction: str
@@ -12,4 +11,5 @@ class Message:
     created_at: datetime
     automated: bool
     status: str
+    user_id: Optional[int] = None
     id: Optional[int] = None

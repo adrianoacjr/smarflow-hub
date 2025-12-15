@@ -12,13 +12,13 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    def list(self) -> List[User]:
+    def get_by_email(self, email: str) -> Optional[User]:
+        pass
+
+    @abstractmethod
+    def list(self, limit: int = 50, offset: int = 0) -> List[User]:
         pass
 
     @abstractmethod
     def delete(self, user_id: int) -> None:
-        pass
-
-    @abstractmethod
-    def get_by_email(self, email: str) -> Optional[User]:
         pass

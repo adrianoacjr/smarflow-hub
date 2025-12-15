@@ -9,7 +9,7 @@ from presentation.dtos.message_dto import MessageCreateDTO, MessageResponseDTO
 router = APIRouter()
 
 @router.post("/messages/", response_model=MessageResponseDTO)
-def save(message_input: MessageCreateDTO):
+def create(message_input: MessageCreateDTO):
     pass
 
 @router.get("/messages/{message_id}", response_model=MessageResponseDTO)
