@@ -32,10 +32,27 @@ class MessageORM(Base):
     automated = Column(Boolean, nullable=False)
     status = Column(
         Enum(
+            # Estados internos
+            "created",        # criado no sistema
+            "queued",         # pronto para envio
+            "sending",        # tentando enviar
+            "received",
+
+            # Estados externos comuns
             "sent",
             "delivered",
             "read",
+
+            # Estados de falha
             "failed",
+            "rejected",
+            "expired",
+            "blocked",
+
+            # Estados especiais
+            "deleted",
+            "unsupported",
+
             name="message_status_enum"
         )
     )

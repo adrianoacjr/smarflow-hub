@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from application.user.authenticate_user import AuthenticateUser
-from presentation.dependencies.di_auth import di_auth
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from application.user.authenticate_user import AuthenticateUser
+
+from presentation.dependencies.di_auth import di_auth
 from presentation.dtos.auth_dto import LoginDTO, TokenResponseDTO
 
 from core.database import get_session

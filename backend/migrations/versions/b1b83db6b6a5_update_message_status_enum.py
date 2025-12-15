@@ -1,8 +1,8 @@
-"""initial schema
+"""update message status enum
 
-Revision ID: fb2101045dee
+Revision ID: b1b83db6b6a5
 Revises: 
-Create Date: 2025-12-13 14:35:09.170432
+Create Date: 2025-12-15 18:56:55.572507
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'fb2101045dee'
+revision: str = 'b1b83db6b6a5'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -48,7 +48,7 @@ def upgrade() -> None:
     sa.Column('source', sa.Enum('whatsapp', 'instagram', 'other', name='message_source_enum'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('automated', sa.Boolean(), nullable=False),
-    sa.Column('status', sa.Enum('sent', 'delivered', 'read', 'failed', name='message_status_enum'), nullable=True),
+    sa.Column('status', sa.Enum('created', 'queued', 'sending', 'received', 'sent', 'delivered', 'read', 'failed', 'rejected', 'expired', 'blocked', 'deleted', 'unsupported', name='message_status_enum'), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

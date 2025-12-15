@@ -6,7 +6,6 @@ from application.user.get_user import GetUser
 from application.user.get_all_users import GetAllUsers
 from application.user.delete_user import DeleteUser
 from infrastructure.repositories.user_repository_postgres import UserRepositoryPostgres
-from core.database import get_session
 
 class DIUser:
     def get_user_repository(self, session: AsyncSession) -> IUserRepository:

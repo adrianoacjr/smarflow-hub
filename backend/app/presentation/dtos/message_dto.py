@@ -13,7 +13,7 @@ class MessageCreateDTO(BaseModel):
     source: str = Field(..., pattern="^(whatsapp|instagram|other)$")
     created_at: datetime
     automated: bool
-    status: str = Field(..., pattern="^(sent|delivered|read|failed)$")
+    status: str = Field(..., pattern="^(created|queued|sending|received|sent|delivered|read|failed|rejected|expired|blocked|deleted|unsupported)$")
 
 class MessageResponseDTO(BaseModel):
     id: int
