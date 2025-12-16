@@ -1,4 +1,4 @@
-from presentation.controllers import user_routes, message_routes, auth_routes, health_routes, test_db_router, webhook_whatsapp_routes
+from presentation.controllers import user_routes, message_routes, auth_routes, health_routes, test_db_router, webhook_whatsapp_routes, customer_routes
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,6 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(user_routes.router)
+app.include_router(customer_routes.router)
 app.include_router(message_routes.router)
 app.include_router(auth_routes.router)
 app.include_router(webhook_whatsapp_routes.router, prefix="/webhooks")

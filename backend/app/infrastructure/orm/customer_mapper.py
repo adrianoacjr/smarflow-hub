@@ -17,7 +17,7 @@ class CustomerMapper:
     
     @staticmethod
     def domain_to_orm(domain: Customer) -> CustomerORM:
-        orm = Customer(
+        orm = CustomerORM(
             id=domain.id,
             name=domain.name,
             email=domain.email,

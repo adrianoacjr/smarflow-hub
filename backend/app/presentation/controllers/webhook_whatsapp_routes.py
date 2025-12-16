@@ -16,7 +16,7 @@ async def whatsapp_webhook(payload: WhatsAppWebhookDTO, session: AsyncSession = 
 
     await service.execute(
         user_id=1,
-        customer_id=123,
+        customer_id=1,
         content=payload.content
     )
 

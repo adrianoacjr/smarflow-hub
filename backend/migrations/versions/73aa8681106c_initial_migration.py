@@ -1,8 +1,8 @@
-"""update message status enum
+"""Initial migration
 
-Revision ID: b1b83db6b6a5
+Revision ID: 73aa8681106c
 Revises: 
-Create Date: 2025-12-15 18:56:55.572507
+Create Date: 2025-12-16 11:05:35.029909
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'b1b83db6b6a5'
+revision: str = '73aa8681106c'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,9 +24,16 @@ def upgrade() -> None:
     op.create_table('customers',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('phone', sa.String(), nullable=True),
+    sa.Column('origin', sa.Enum('whatsapp', 'instagram', 'manual', 'other', name='customer_origin_enum'), nullable=False),
+    sa.Column('tags', sa.ARRAY(sa.String()), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_index(op.f('ix_customers_email'), 'customers', ['email'], unique=True)
     op.create_index(op.f('ix_customers_id'), 'customers', ['id'], unique=False)
+    op.create_index(op.f('ix_customers_phone'), 'customers', ['phone'], unique=True)
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
@@ -65,6 +72,8 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_users_id'), table_name='users')
     op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_table('users')
+    op.drop_index(op.f('ix_customers_phone'), table_name='customers')
     op.drop_index(op.f('ix_customers_id'), table_name='customers')
+    op.drop_index(op.f('ix_customers_email'), table_name='customers')
     op.drop_table('customers')
     # ### end Alembic commands ###

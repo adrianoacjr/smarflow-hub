@@ -7,9 +7,8 @@ class CreateCustomer:
     def __init__(self, repo: ICustomerRepository):
         self.repo = repo
 
-    async def execute(self, name: str, email: str, phone: str, origin: str, created_at: datetime, user_id: int) -> Customer:
+    async def execute(self, name: str, email: str, phone: str, origin: str, created_at: datetime) -> Customer:
         new_customer = Customer(
-            user_id=user_id,
             name=name,
             email=email,
             phone=phone,

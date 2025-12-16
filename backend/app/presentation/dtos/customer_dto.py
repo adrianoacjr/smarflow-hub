@@ -13,10 +13,23 @@ class CustomerCreateDTO(BaseModel):
     tags: List[str] = Field(default_factory=list) 
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-class UserResponseDTO(BaseModel):
+class CustomerResponseDTO(BaseModel):
+    id: int
+    name: str
+    email: str
+    phone: str
+    origin: str
+    tags: list[str]
+    created_at: datetime
 
     @staticmethod
-    def from_domain(user: User):
-        return UserResponseDTO(
-
+    def from_domain(customer: Customer):
+        return CustomerResponseDTO(
+            id=customer.id,
+            name=customer.name,
+            email=customer.email,
+            phone=customer.phone,
+            origin=customer.origin,
+            tags=customer.tags,
+            created_at=customer.created_at
         )
