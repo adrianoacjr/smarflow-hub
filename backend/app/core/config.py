@@ -6,6 +6,10 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+    OPENAI_API_KEY: str
+    OPENAI_TIMEOUT: int = 20
+    OPENAI_MAX_RETRIES: int = 3
+    OPENAI_RETRY_BACKOFF: float = 1.5
 
     model_config = SettingsConfigDict(
         env_file=".env",
