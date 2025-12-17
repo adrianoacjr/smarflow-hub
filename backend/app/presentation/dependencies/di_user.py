@@ -1,10 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.interfaces.user_repository import IUserRepository
+
 from application.user.create_user import CreateUser
 from application.user.get_user import GetUser
 from application.user.get_all_users import GetAllUsers
 from application.user.delete_user import DeleteUser
+
 from infrastructure.repositories.user_repository_postgres import UserRepositoryPostgres
 
 class DIUser:
