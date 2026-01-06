@@ -1,8 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
-from domain.models.message import Message
-
 from presentation.dependencies.di_message import di_message
 from presentation.dtos.message_dto import MessageCreateDTO, MessageResponseDTO
 

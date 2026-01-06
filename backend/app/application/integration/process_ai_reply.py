@@ -11,7 +11,7 @@ class ProcessAIReply:
     async def execute(
             self, *, customer_id: int, inbound_content: str,) -> Message:
         if not inbound_content.strip():
-            raise ValueError("Oubound message cannot be empty")
+            raise ValueError("Inbound message cannot be empty")
         
         ai_reply = await self.ai_service.generate_reply(inbound_content)
 
