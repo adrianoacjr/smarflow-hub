@@ -4,7 +4,7 @@ from domain.interfaces.customer_repository import ICustomerRepository
 
 from application.use_cases.customer.create_customer import CreateCustomer
 
-from adapters.repositories.customer_repository_postgres import CustomerRepositoryPostgres
+from infrastructure.repositories.customer_repository_postgres import CustomerRepositoryPostgres
 
 class DICustomer:
     def get_user_repository(self, session: AsyncSession) -> ICustomerRepository:

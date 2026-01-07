@@ -6,7 +6,7 @@ from domain.entities.user import User
 from domain.interfaces.user_repository import IUserRepository
 
 from infrastructure.orm.user_orm import UserORM
-from adapters.mappers.user_mapper import UserMapper
+from infrastructure.mappers.user_mapper import UserMapper
 
 class UserRepositoryPostgres(IUserRepository):
     def __init__(self, session: AsyncSession):

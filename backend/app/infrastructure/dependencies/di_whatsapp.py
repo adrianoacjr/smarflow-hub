@@ -1,6 +1,6 @@
 import os
 
-from backend.app.adapters.gateways.whatsapp_message_gateway_whatsapp import MessageGatewayWhatsapp
+from backend.app.infrastructure.gateways.whatsapp_message_gateway_whatsapp import MessageGatewayWhatsapp
 
 from application.whatsapp.send_whatsapp_message import SendWhatsappMessage
 

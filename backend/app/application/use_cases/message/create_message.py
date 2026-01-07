@@ -1,0 +1,2 @@
+class CreateMessage:
+    pass

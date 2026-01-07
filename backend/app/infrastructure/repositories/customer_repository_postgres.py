@@ -6,7 +6,7 @@ from domain.entities.customer import Customer
 from domain.interfaces.customer_repository import ICustomerRepository
 
 from infrastructure.orm.customer_orm import CustomerORM
-from adapters.mappers.customer_mapper import CustomerMapper
+from infrastructure.mappers.customer_mapper import CustomerMapper
 
 class CustomerRepositoryPostgres(ICustomerRepository):
     def __init__(self, session: AsyncSession):

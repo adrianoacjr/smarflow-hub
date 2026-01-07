@@ -6,7 +6,7 @@ from domain.entities.message import Message
 from domain.interfaces.message_repository import IMessageRepository
 
 from infrastructure.orm.message_orm import MessageORM
-from adapters.mappers.message_mapper import MessageMapper
+from infrastructure.mappers.message_mapper import MessageMapper
 
 class MessageRepositoryPostgres(IMessageRepository):
     def __init__(self, session: AsyncSession):

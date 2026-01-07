@@ -1,0 +1,2 @@
+class ListMessageByCustomer:
+    pass

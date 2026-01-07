@@ -7,9 +7,9 @@ from application.use_cases.integration.generate_ai_reply import GenerateAIReply
 from application.use_cases.message.save_outbound_message import SaveOutboundMessage
 from application.use_cases.integration.process_ai_reply import ProcessAIReply
 
-from adapters.gateways.ai_responder_gateway_openai import AIResponderGatewayOpenai
-from adapters.gateways.openai_client import OpenAIClientFactory
-from adapters.repositories.message_repository_postgres import MessageRepositoryPostgres
+from infrastructure.gateways.ai_responder_gateway_openai import AIResponderGatewayOpenai
+from infrastructure.gateways.openai_client import OpenAIClientFactory
+from infrastructure.repositories.message_repository_postgres import MessageRepositoryPostgres
 
 class DIAI:
     def get_message_repository(self, session: AsyncSession) -> IMessageRepository:

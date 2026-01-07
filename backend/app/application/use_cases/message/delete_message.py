@@ -1,0 +1,2 @@
+class DeleteMessage:
+    pass

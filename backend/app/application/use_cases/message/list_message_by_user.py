@@ -1,0 +1,2 @@
+class ListMessageByUser:
+    pass

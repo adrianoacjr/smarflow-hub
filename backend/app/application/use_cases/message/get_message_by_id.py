@@ -1,0 +1,2 @@
+class GetMessageById:
+    pass
