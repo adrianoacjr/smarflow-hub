@@ -1,4 +1,4 @@
-from domain.models.user import User
+from domain.entities.user import User
 from abc import ABC, abstractmethod
 from typing import Optional, List
 

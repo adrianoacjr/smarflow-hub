@@ -1,0 +1,22 @@
+from datetime import datetime, timezone
+
+from domain.entities.message import Message
+from domain.interfaces.message_repository import IMessageRepository
+
+class ReceiveWhatsAppMessage:
+    def __init__(self, repo: IMessageRepository):
+        self.repo = repo
+
+    async def execute(self, user_id: int, customer_id: int, content: str) -> Message:
+        message = Message(
+            user_id=user_id,
+            customer_id=customer_id,
+            content=content,
+            direction="inbound",
+            source="whatsapp",
+            created_at=datetime.now(timezone.utc),
+            automated=False,
+            status="received"
+        )
+
+        return await self.repo.create(message)

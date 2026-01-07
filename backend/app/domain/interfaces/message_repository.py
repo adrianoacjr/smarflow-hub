@@ -1,4 +1,4 @@
-from domain.models.message import Message
+from domain.entities.message import Message
 from abc import ABC, abstractmethod
 from typing import Optional, List
 

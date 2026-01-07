@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from presentation.controllers import user_routes
-from presentation.controllers import message_routes
-from presentation.controllers import customer_routes
-from presentation.controllers import auth_routes
-from presentation.controllers import health_routes
-from presentation.controllers import test_db_router
-from presentation.controllers import webhook_whatsapp_routes
-from presentation.controllers import gpt_routes
+from infrastructure.controllers import user_routes
+from infrastructure.controllers import message_routes
+from infrastructure.controllers import customer_routes
+from infrastructure.controllers import auth_routes
+from infrastructure.controllers import health_routes
+from infrastructure.controllers import test_db_router
+from infrastructure.controllers import webhook_whatsapp_routes
+from infrastructure.controllers import gpt_routes
 
 app = FastAPI(title="SmartFlow Hub API")
 
