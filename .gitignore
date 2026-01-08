@@ -9,7 +9,9 @@ __pycache__/
 single_file.py
 merged_program.py
 *dependency_graph*
+smartflow_hub_dependencies.png
 create_dot.py
+create_dot2.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

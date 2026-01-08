@@ -1,0 +1,2 @@
+class GetCustomer:
+    pass

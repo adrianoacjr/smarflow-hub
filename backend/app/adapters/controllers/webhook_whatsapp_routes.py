@@ -1,23 +1,19 @@
-from fastapi import APIRouter, Depends, status
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, status
 
 from application.dtos.whatsapp_webhook_dto import WhatsAppWebhookDTO
 from application.use_cases.integration.receive_whatsapp_message import ReceiveWhatsAppMessage
 
-from infrastructure.dependencies.di_message import di_message
+def build_webhook_whatsapp_router(
+    receive_whatsapp_message: ReceiveWhatsAppMessage,
+) -> APIRouter:
+    router = APIRouter()
 
-from core.database import get_session
+    @router.post("/whatsapp-webhook", status_code=status.HTTP_200_OK)
+    async def whatsapp_webhook(payload: WhatsAppWebhookDTO):
+        await receive_whatsapp_message.execute(
+            user_id=1,
+            customer_id=1,
+            content=payload.content
+        )
 
-router = APIRouter()
-
-@router.post("/whatsapp-webhook", status_code=status.HTTP_200_OK)
-async def whatsapp_webhook(payload: WhatsAppWebhookDTO, session: AsyncSession = Depends(get_session)):
-    service: ReceiveWhatsAppMessage = di_message.get_receive_whatsapp_message(session)
-
-    await service.execute(
-        user_id=1,
-        customer_id=1,
-        content=payload.content
-    )
-
-    return {"status": "received"}
+        return {"status": "received"}

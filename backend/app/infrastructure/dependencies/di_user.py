@@ -4,6 +4,7 @@ from application.use_cases.user.create_user import CreateUser
 from application.use_cases.user.get_user import GetUser
 from application.use_cases.user.get_all_users import GetAllUsers
 from application.use_cases.user.delete_user import DeleteUser
+from application.use_cases.user.update_user import UpdateUser
 
 from infrastructure.repositories.user_repository_postgres import UserRepositoryPostgres
 
@@ -16,6 +17,7 @@ class DIUser:
         GetUser,
         GetAllUsers,
         DeleteUser,
+        UpdateUser,
     ]:
         repo = UserRepositoryPostgres(session)
 
@@ -24,6 +26,7 @@ class DIUser:
             GetUser(repo),
             GetAllUsers(repo),
             DeleteUser(repo),
+            UpdateUser(repo),
         )
     # def get_user_repository(self, session: AsyncSession) -> UserRepositoryPostgres:
     #     return UserRepositoryPostgres(session)

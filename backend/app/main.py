@@ -27,6 +27,7 @@ async def lifespan(app: FastAPI):
             get_user,
             get_all_users,
             delete_user,
+            update_user,
         ) = di_user.build(session)
 
         user_router = build_user_router(
@@ -34,6 +35,7 @@ async def lifespan(app: FastAPI):
             get_user=get_user,
             get_all_users=get_all_users,
             delete_user=delete_user,
+            update_user=update_user,
         )
 
         app.include_router(user_router)
@@ -48,7 +50,6 @@ async def lifespan(app: FastAPI):
         ) = di_message.build(session)
 
         message_router = build_message_router(
-            receive_whatsapp_message=receive_whatsapp_message,
             create_message=create_message,
             get_message_by_id=get_message_by_id,
             list_message_by_user=list_message_by_user,
@@ -57,6 +58,60 @@ async def lifespan(app: FastAPI):
         )
 
         app.include_router(message_router)
+
+        webhook_whatsapp_router = build_webhook_whatsapp_router(
+            receive_whatsapp_message=receive_whatsapp_message,
+        )
+
+        app.include_router(webhook_whatsapp_router, prefix="/webhooks")
+
+        (
+            create_customer,
+            delete_customer,
+            get_all_customers,
+            get_customer,
+            update_customer,
+        ) = di_customer.build(session)
+
+        customer_router = build_customer_router(
+            create_customer=create_customer,
+            delete_customer=delete_customer,
+            get_all_customers=get_all_customers,
+            get_customer=get_customer,
+            update_customer=update_customer,
+        )
+
+        app.include_router(customer_router)
+
+        (
+            authenticate_user,
+        ) = di_auth.build(session)
+
+        auth_router = build_auth_router(
+            authenticate_user=authenticate_user,
+        )
+
+        app.include_router(auth_router)
+
+        health_router = build_health_router()
+
+        app.include_router(health_router)
+
+        test_db_router = build_db_router(
+            session=session,
+        )
+
+        app.include_router(test_db_router, prefix="/health")
+
+        (
+            process_ai_reply,
+        ) = di_ai.build(session)
+
+        gpt_routes = build_gpt_router(
+            process_ai_reply=process_ai_reply,
+        )
+
+        app.include_router(gpt_routes, tags=["AI"])
 
         yield
 
@@ -79,9 +134,3 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(customer_routes.router)
-app.include_router(auth_routes.router)
-app.include_router(webhook_whatsapp_routes.router, prefix="/webhooks")
-app.include_router(health_routes.router)
-app.include_router(test_db_router.router, prefix="/health")
-app.include_router(gpt_routes.router, tags=["AI"])

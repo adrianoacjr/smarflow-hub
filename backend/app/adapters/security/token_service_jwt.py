@@ -1,4 +1,4 @@
-from domain.interfaces.token_service import ITokenService
+from application.interfaces.token_service import ITokenService
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 

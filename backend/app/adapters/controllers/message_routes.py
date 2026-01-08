@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException
 from typing import List
 
 from application.dtos.message_dto import MessageCreateDTO, MessageResponseDTO

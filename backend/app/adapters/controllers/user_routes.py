@@ -5,12 +5,14 @@ from application.use_cases.user.create_user import CreateUser
 from application.use_cases.user.delete_user import DeleteUser
 from application.use_cases.user.get_all_users import GetAllUsers
 from application.use_cases.user.get_user import GetUser
+from application.use_cases.user.update_user import UpdateUser
 
 def build_user_router(
     create_user: CreateUser,
     get_user: GetUser,
     get_all_users: GetAllUsers,
     delete_user: DeleteUser,
+    update_user: UpdateUser,
 ) -> APIRouter:
     router = APIRouter()
 
