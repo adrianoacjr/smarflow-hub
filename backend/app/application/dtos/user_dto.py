@@ -21,7 +21,7 @@ class UserResponseDTO(BaseModel):
     active: bool
 
     @staticmethod
-    def from_domain(user):
+    def from_domain(user: User):
         return UserResponseDTO(
             id=user.id,
             name=user.name,

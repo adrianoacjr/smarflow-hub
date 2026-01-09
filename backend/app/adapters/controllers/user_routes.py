@@ -28,8 +28,8 @@ def build_user_router(
         return UserResponseDTO.from_domain(user)
 
     @router.get("/users/{user_id}", response_model=UserResponseDTO)
-    def get(user_id: int):
-        user = get_user.execute(user_id)
+    async def get(user_id: int):
+        user = await get_user.execute(user_id)
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         return UserResponseDTO.from_domain(user)
@@ -40,8 +40,8 @@ def build_user_router(
         return [UserResponseDTO.from_domain(user) for user in users]
 
     @router.delete("/users/{user_id}", status_code=204)
-    def delete(user_id: int):
-        delete_user.execute(user_id)
+    async def delete(user_id: int):
+        await delete_user.execute(user_id)
         return None
     
     return router
