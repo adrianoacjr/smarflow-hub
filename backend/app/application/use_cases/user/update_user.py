@@ -1,2 +1,5 @@
+from domain.interfaces.user_repository import IUserRepository
+
 class UpdateUser:
-    pass
+    def __init__(self, repo: IUserRepository):
+        self.repo = repo

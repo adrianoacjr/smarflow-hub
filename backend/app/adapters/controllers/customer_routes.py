@@ -26,3 +26,5 @@ def build_customer_router(
             customer_input.created_at
         )
         return CustomerResponseDTO.from_domain(customer)
+
+    return router

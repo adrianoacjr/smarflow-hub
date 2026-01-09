@@ -24,3 +24,5 @@ def build_auth_router(
                 detail="Invalid username or password"
             )
         return TokenResponseDTO(access_token=token)
+
+    return router

@@ -18,10 +18,10 @@ class DIAuth:
         AuthenticateUser,
     ]:
         repo = UserRepositoryPostgres(session)
-        token = TokenServiceJWT()
+        token_service = TokenServiceJWT()
 
         return (
-            AuthenticateUser(repo, token),
+            AuthenticateUser(repo, token_service),
         )
 
     # def get_user_repository(self, session: AsyncSession) -> IUserRepository:

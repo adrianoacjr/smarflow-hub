@@ -33,3 +33,5 @@ def build_gpt_router(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="AI service temporarily enavailable"
             )
+
+    return router

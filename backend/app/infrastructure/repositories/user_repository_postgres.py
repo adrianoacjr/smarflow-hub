@@ -33,7 +33,7 @@ class UserRepositoryPostgres(IUserRepository):
         orm = result.scalar_one_or_none()
         return UserMapper.orm_to_domain(orm) if orm else None
     
-    async def list(self) -> List[User]:
+    async def get_all(self) -> List[User]:
         result = await self.session.execute(select(UserORM))
         orms = result.scalars().all()
         return [UserMapper.orm_to_domain(o) for o in orms]

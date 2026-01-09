@@ -20,25 +20,25 @@ class DIAI:
         SaveOutboundMessage,
         ProcessAIReply,
     ]:
-        repo = MessageRepositoryPostgres(session)
-        client = OpenAIClientFactory.create()
-        gateway = AIResponderGatewayOpenai()
+        # repo = MessageRepositoryPostgres(session)
+        # client = OpenAIClientFactory.create()
+        # gateway = AIResponderGatewayOpenai()
 
         return (
-            ProcessAIReply(GenerateAIReply(client), SaveOutboundMessage(session))
+            ProcessAIReply(self.get_generate_ai_reply_service(), self.get_save_outbound_message_service(session))
         )
-    # def get_message_repository(self, session: AsyncSession) -> IMessageRepository:
-    #     return MessageRepositoryPostgres(session)
+    def get_message_repository(self, session: AsyncSession) -> MessageRepositoryPostgres:
+        return MessageRepositoryPostgres(session)
 
-    # def get_ai_gateway(self) -> IAIResponderGateway:
-    #     client = OpenAIClientFactory.create()
-    #     return AIResponderGatewayOpenai(client)
+    def get_ai_gateway(self) -> AIResponderGatewayOpenai:
+        client = OpenAIClientFactory.create()
+        return AIResponderGatewayOpenai(client)
 
-    # def get_generate_ai_reply_service(self) -> GenerateAIReply:
-    #     return GenerateAIReply(self.get_ai_gateway())
+    def get_generate_ai_reply_service(self) -> GenerateAIReply:
+        return GenerateAIReply(self.get_ai_gateway())
         
-    # def get_save_outbound_message_service(self, session: AsyncSession) -> SaveOutboundMessage:
-    #     return SaveOutboundMessage(self.get_message_repository(session))
+    def get_save_outbound_message_service(self, session: AsyncSession) -> SaveOutboundMessage:
+        return SaveOutboundMessage(self.get_message_repository(session))
 
     # def get_process_ai_reply_service(self, session: AsyncSession) -> ProcessAIReply:
     #     return ProcessAIReply(

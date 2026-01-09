@@ -36,3 +36,5 @@ def build_message_router(
     @router.get("/users/{user_id}", status_code=204)
     def delete(user_id: int):
         pass
+
+    return router

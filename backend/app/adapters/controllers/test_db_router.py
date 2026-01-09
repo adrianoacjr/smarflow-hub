@@ -16,3 +16,5 @@ def build_db_router(
             return {"database": "connected", "result": value}
         except Exception as e:
             return {"database": "error", "detail": str(e)}
+
+    return router

@@ -83,9 +83,7 @@ async def lifespan(app: FastAPI):
 
         app.include_router(customer_router)
 
-        (
-            authenticate_user,
-        ) = di_auth.build(session)
+        authenticate_user = di_auth.build(session)
 
         auth_router = build_auth_router(
             authenticate_user=authenticate_user,
@@ -103,9 +101,7 @@ async def lifespan(app: FastAPI):
 
         app.include_router(test_db_router, prefix="/health")
 
-        (
-            process_ai_reply,
-        ) = di_ai.build(session)
+        process_ai_reply = di_ai.build(session)
 
         gpt_routes = build_gpt_router(
             process_ai_reply=process_ai_reply,

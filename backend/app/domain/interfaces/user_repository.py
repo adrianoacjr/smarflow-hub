@@ -16,7 +16,7 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    def list(self, limit: int = 50, offset: int = 0) -> List[User]:
+    def get_all(self, limit: int = 50, offset: int = 0) -> List[User]:
         pass
 
     @abstractmethod

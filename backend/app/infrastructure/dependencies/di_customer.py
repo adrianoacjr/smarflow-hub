@@ -25,10 +25,10 @@ class DICustomer:
 
         return (
             CreateCustomer(repo),
-            GetCustomer(repo),
-            GetAllCustomers(repo),
-            DeleteCustomer(repo),
-            UpdateCustomer(repo),
+            GetCustomer(),
+            GetAllCustomers(),
+            DeleteCustomer(),
+            UpdateCustomer(),
         )
 
         # def get_user_repository(self, session: AsyncSession) -> ICustomerRepository:

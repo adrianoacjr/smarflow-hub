@@ -4,7 +4,7 @@ from application.use_cases.integration.generate_ai_reply import GenerateAIReply
 from application.use_cases.message.save_outbound_message import SaveOutboundMessage
 
 class ProcessAIReply:
-    def __init__(self, *, ai_service: GenerateAIReply, save_outbound_message: SaveOutboundMessage):
+    def __init__(self, ai_service: GenerateAIReply, save_outbound_message: SaveOutboundMessage):
         self.ai_service = ai_service
         self.save_outbound_message = save_outbound_message
 

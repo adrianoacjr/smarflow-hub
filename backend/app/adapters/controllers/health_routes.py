@@ -6,3 +6,5 @@ def build_health_router():
     @router.get("/health")
     def check_system_health():
         return {"status": "ok"}
+
+    return router

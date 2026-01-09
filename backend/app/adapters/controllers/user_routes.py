@@ -35,11 +35,13 @@ def build_user_router(
         return UserResponseDTO.from_domain(user)
 
     @router.get("/users/", response_model=list[UserResponseDTO])
-    def get_all():
-        users = get_all_users.execute()
+    async def get_all():
+        users = await get_all_users.execute()
         return [UserResponseDTO.from_domain(user) for user in users]
 
     @router.delete("/users/{user_id}", status_code=204)
     def delete(user_id: int):
         delete_user.execute(user_id)
         return None
+    
+    return router

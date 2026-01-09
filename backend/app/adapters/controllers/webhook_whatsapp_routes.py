@@ -17,3 +17,5 @@ def build_webhook_whatsapp_router(
         )
 
         return {"status": "received"}
+
+    return router

@@ -25,11 +25,11 @@ class DIMessage:
 
         return (
             ReceiveWhatsAppMessage(repo),
-            CreateMessage(repo),
-            GetMessageById(repo),
-            ListMessageByUser(repo),
-            ListMessageByCustomer(repo),
-            DeleteMessage(repo),
+            CreateMessage(),
+            GetMessageById(),
+            ListMessageByUser(),
+            ListMessageByCustomer(),
+            DeleteMessage(),
         )
     # def get_message_repository(self, session: AsyncSession) -> IMessageRepository:
     #     return MessageRepositoryPostgres(session)
