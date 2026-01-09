@@ -1,6 +1,7 @@
+from typing import Optional
+
 from domain.entities.user import User
 from domain.interfaces.user_repository import IUserRepository
-from typing import Optional
 
 class GetUser:
     def __init__(self, repo: IUserRepository):

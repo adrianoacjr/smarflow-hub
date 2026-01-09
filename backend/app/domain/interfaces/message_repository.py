@@ -1,6 +1,7 @@
-from domain.entities.message import Message
 from abc import ABC, abstractmethod
 from typing import Optional, List
+
+from domain.entities.message import Message
 
 class IMessageRepository(ABC):
     @abstractmethod

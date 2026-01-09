@@ -1,5 +1,4 @@
 from domain.entities.message import Message
-
 from infrastructure.orm.message_orm import MessageORM
 
 class MessageMapper:

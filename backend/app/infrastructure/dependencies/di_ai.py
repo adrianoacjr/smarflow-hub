@@ -1,12 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-# from domain.interfaces.message_repository import IMessageRepository
-
-# from application.interfaces.ai_responder_gateway import IAIResponderGateway
 from application.use_cases.integration.generate_ai_reply import GenerateAIReply
 from application.use_cases.message.save_outbound_message import SaveOutboundMessage
 from application.use_cases.integration.process_ai_reply import ProcessAIReply
-
 from infrastructure.gateways.ai_responder_gateway_openai import AIResponderGatewayOpenai
 from infrastructure.gateways.openai_client import OpenAIClientFactory
 from infrastructure.repositories.message_repository_postgres import MessageRepositoryPostgres
@@ -20,10 +16,6 @@ class DIAI:
         SaveOutboundMessage,
         ProcessAIReply,
     ]:
-        # repo = MessageRepositoryPostgres(session)
-        # client = OpenAIClientFactory.create()
-        # gateway = AIResponderGatewayOpenai()
-
         return (
             ProcessAIReply(self.get_generate_ai_reply_service(), self.get_save_outbound_message_service(session))
         )

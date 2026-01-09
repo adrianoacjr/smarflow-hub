@@ -1,5 +1,4 @@
 from domain.entities.user import User
-
 from infrastructure.orm.user_orm import UserORM
 
 class UserMapper:

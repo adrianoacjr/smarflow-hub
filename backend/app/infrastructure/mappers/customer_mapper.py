@@ -1,5 +1,4 @@
 from domain.entities.customer import Customer
-
 from infrastructure.orm.customer_orm import CustomerORM
 
 class CustomerMapper:

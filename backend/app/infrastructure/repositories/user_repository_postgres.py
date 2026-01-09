@@ -1,10 +1,10 @@
 from typing import Optional, List
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
 
 from domain.entities.user import User
 from domain.interfaces.user_repository import IUserRepository
-
 from infrastructure.orm.user_orm import UserORM
 from infrastructure.mappers.user_mapper import UserMapper
 

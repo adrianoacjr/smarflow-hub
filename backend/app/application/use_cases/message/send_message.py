@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
 from domain.entities.message import Message
-
 from domain.interfaces.message_repository import IMessageRepository
 
 class SendMessage:

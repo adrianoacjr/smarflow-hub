@@ -1,6 +1,7 @@
+from typing import Optional, List
+
 from domain.models.message import Message
 from domain.interfaces.message_repository import IMessageRepository
-from typing import Optional, List
 
 class MessageRepositoryFake(IMessageRepository):
     def __init__(self):

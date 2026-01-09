@@ -3,7 +3,6 @@ from typing import Optional
 import bcrypt
 
 from domain.interfaces.user_repository import IUserRepository
-
 from application.interfaces.token_service import ITokenService
 
 class AuthenticateUser:

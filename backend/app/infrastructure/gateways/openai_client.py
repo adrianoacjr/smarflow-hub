@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI
+
 from core.config import settings
 
 class OpenAIClientFactory:

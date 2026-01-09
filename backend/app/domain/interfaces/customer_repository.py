@@ -1,6 +1,7 @@
-from domain.entities.customer import Customer
 from abc import ABC, abstractmethod
 from typing import Optional, List
+
+from domain.entities.customer import Customer
 
 class ICustomerRepository(ABC):
     @abstractmethod
@@ -20,7 +21,7 @@ class ICustomerRepository(ABC):
         pass
 
     @abstractmethod
-    def list(self, limit: int = 50, offset: int = 0) -> List[Customer]:
+    def get_all(self, limit: int = 50, offset: int = 0) -> List[Customer]:
         pass
 
     @abstractmethod

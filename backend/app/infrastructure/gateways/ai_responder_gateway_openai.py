@@ -1,4 +1,5 @@
 import asyncio
+
 from openai import OpenAIError
 
 from application.interfaces.ai_responder_gateway import IAIResponderGateway

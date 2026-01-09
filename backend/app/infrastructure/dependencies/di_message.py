@@ -6,7 +6,6 @@ from application.use_cases.message.get_message_by_id import GetMessageById
 from application.use_cases.message.list_message_by_user import ListMessageByUser
 from application.use_cases.message.list_message_by_customer import ListMessageByCustomer
 from application.use_cases.message.delete_message import DeleteMessage
-
 from infrastructure.repositories.message_repository_postgres import MessageRepositoryPostgres
 
 class DIMessage:

@@ -1,6 +1,7 @@
+from typing import Optional, List
+
 from models.social_content import SocialContent
 from data.social_content_db import fake_social_content_db, get_next_message_id
-from typing import Optional, List
 
 class SocialContentRepositoryFake:
     def get_by_id(self, content_id: int) -> Optional[SocialContent]:
