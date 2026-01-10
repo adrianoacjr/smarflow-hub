@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from application.dtos.gpt_dto import GPTRequestDTO, GPTResponseDTO
+from adapters.dtos.gpt_dto import GPTRequestDTO, GPTResponseDTO
 from application.use_cases.integration.process_ai_reply import ProcessAIReply
 
 def build_gpt_router(

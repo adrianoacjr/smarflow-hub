@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from application.dtos.auth_dto import LoginDTO, TokenResponseDTO
+from adapters.dtos.auth_dto import LoginDTO, TokenResponseDTO
 from application.use_cases.user.authenticate_user import AuthenticateUser
 
 def build_auth_router(

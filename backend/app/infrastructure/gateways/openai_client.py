@@ -1,6 +1,6 @@
 from openai import AsyncOpenAI
 
-from core.config import settings
+from infrastructure.config import settings
 
 class OpenAIClientFactory:
     @staticmethod

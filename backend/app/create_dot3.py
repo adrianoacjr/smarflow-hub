@@ -296,8 +296,8 @@ digraph G {{
     style="filled,rounded";
     fillcolor={colors['core_color_B']};
 
-    "app.core.config";
-    "app.core.database";
+    "app.infrastructure.config";
+    "app.infrastructure.database";
   }}
 
   // ===== Edges =====
@@ -311,7 +311,7 @@ digraph G {{
   "app.presentation.controllers.user_routes" -> "app.application.user.delete_user" [color={colors['cont_color_A']}];
   "app.presentation.controllers.user_routes" -> "app.application.user.get_all_users" [color={colors['cont_color_A']}];
   "app.presentation.controllers.user_routes" -> "app.application.user.get_user" [color={colors['cont_color_A']}];
-  "app.presentation.controllers.user_routes" -> "app.core.database" [color={colors['cont_color_A']}];
+  "app.presentation.controllers.user_routes" -> "app.infrastructure.database" [color={colors['cont_color_A']}];
 
   //"app.presentation.dependencies.di_user" -> "app.domain.interfaces.user_repository" [color={colors['dep_color_A']}];
   "app.presentation.dependencies.di_user" -> "app.application.user.create_user" [color={colors['dep_color_A']}];
@@ -345,7 +345,7 @@ digraph G {{
 
   "app.presentation.dtos.user_dto" -> "app.domain.models.user" [color={colors['dto_color_A']}];
 
-  "app.core.database" -> "app.core.config" [color={colors['core_color_A']}];
+  "app.infrastructure.database" -> "app.infrastructure.config" [color={colors['core_color_A']}];
 
   // ===== Message Module =====
   "app.main" -> "app.presentation.controllers.message_routes" [color={colors['pres_color_A']}];
@@ -380,7 +380,7 @@ digraph G {{
   "app.presentation.controllers.customer_routes" -> "app.presentation.dependencies.di_customer" [color={colors['cont_color_A']}];
   "app.presentation.controllers.customer_routes" -> "app.presentation.dtos.customer_dto" [color={colors['cont_color_A']}];
   "app.presentation.controllers.customer_routes" -> "app.application.customer.create_customer" [color={colors['cont_color_A']}];
-  "app.presentation.controllers.customer_routes" -> "app.core.database" [color={colors['cont_color_A']}];
+  "app.presentation.controllers.customer_routes" -> "app.infrastructure.database" [color={colors['cont_color_A']}];
 
   //"app.presentation.dependencies.di_customer" -> "app.domain.interfaces.customer_repository" [color={colors['dep_color_A']}];
   "app.presentation.dependencies.di_customer" -> "app.application.customer.create_customer" [color={colors['dep_color_A']}];
@@ -409,7 +409,7 @@ digraph G {{
   "app.presentation.controllers.auth_routes" -> "app.application.user.authenticate_user" [color={colors['cont_color_A']}];
   "app.presentation.controllers.auth_routes" -> "app.presentation.dependencies.di_auth" [color={colors['cont_color_A']}];
   "app.presentation.controllers.auth_routes" -> "app.presentation.dtos.auth_dto" [color={colors['cont_color_A']}];
-  "app.presentation.controllers.auth_routes" -> "app.core.database" [color={colors['cont_color_A']}];
+  "app.presentation.controllers.auth_routes" -> "app.infrastructure.database" [color={colors['cont_color_A']}];
 
   "app.application.user.authenticate_user" -> "app.domain.interfaces.user_repository" [color={colors['use_color_A']}];
   "app.application.user.authenticate_user" -> "app.domain.interfaces.token_service" [color={colors['use_color_A']}];
@@ -428,7 +428,7 @@ digraph G {{
   "app.presentation.controllers.webhook_whatsapp_routes" -> "app.application.integration.receive_whatsapp_message" [color={colors['cont_color_A']}];
   "app.presentation.controllers.webhook_whatsapp_routes" -> "app.presentation.dependencies.di_message" [color={colors['cont_color_A']}];
   "app.presentation.controllers.webhook_whatsapp_routes" -> "app.presentation.dtos.whatsapp_webhook_dto" [color={colors['cont_color_A']}];
-  "app.presentation.controllers.webhook_whatsapp_routes" -> "app.core.database" [color={colors['cont_color_A']}];
+  "app.presentation.controllers.webhook_whatsapp_routes" -> "app.infrastructure.database" [color={colors['cont_color_A']}];
 
   "app.application.integration.receive_whatsapp_message" -> "app.domain.models.message" [color={colors['use_color_A']}];
   "app.application.integration.receive_whatsapp_message" -> "app.domain.interfaces.message_repository" [color={colors['use_color_A']}];
@@ -459,7 +459,7 @@ digraph G {{
 
   "app.infrastructure.gateways.ai_responder_gateway_openai" -> "app.domain.interfaces.ai_responder_gateway" [color={colors['gate_color_A']}];
 
-  "app.infrastructure.gateways.openai_client" -> "app.core.config" [color={colors['gate_color_A']}];
+  "app.infrastructure.gateways.openai_client" -> "app.infrastructure.config" [color={colors['gate_color_A']}];
 
   
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from application.dtos.customer_dto import CustomerCreateDTO, CustomerResponseDTO
+from adapters.dtos.customer_dto import CustomerCreateDTO, CustomerResponseDTO
 from application.use_cases.customer.create_customer import CreateCustomer
 from application.use_cases.customer.delete_customer import DeleteCustomer
 from application.use_cases.customer.get_all_customers import GetAllCustomers

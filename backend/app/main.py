@@ -1,16 +1,14 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from core.database import get_session
 
 from infrastructure.dependencies.di_user import di_user
 from infrastructure.dependencies.di_message import di_message
 from infrastructure.dependencies.di_customer import di_customer
 from infrastructure.dependencies.di_auth import di_auth
 from infrastructure.dependencies.di_ai import di_ai
-
-from adapters.controllers.user_routes import build_user_router
+from adapters.controllers import user_routes
 from adapters.controllers.message_routes import build_message_router
 from adapters.controllers.customer_routes import build_customer_router
 from adapters.controllers.auth_routes import build_auth_router
@@ -18,28 +16,11 @@ from adapters.controllers.health_routes import build_health_router
 from adapters.controllers.test_db_router import build_db_router
 from adapters.controllers.webhook_whatsapp_routes import build_webhook_whatsapp_router
 from adapters.controllers.gpt_routes import build_gpt_router
+from infrastructure.database import get_session
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with get_session() as session:
-        (
-            create_user,
-            get_user,
-            get_all_users,
-            delete_user,
-            update_user,
-        ) = di_user.build(session)
-
-        user_router = build_user_router(
-            create_user=create_user,
-            get_user=get_user,
-            get_all_users=get_all_users,
-            delete_user=delete_user,
-            update_user=update_user,
-        )
-
-        app.include_router(user_router)
-
         (
             receive_whatsapp_message,
             create_message,
@@ -130,3 +111,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(user_routes.router)

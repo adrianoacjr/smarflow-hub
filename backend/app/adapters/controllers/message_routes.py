@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException
 
-from application.dtos.message_dto import MessageCreateDTO, MessageResponseDTO
+from adapters.dtos.message_dto import MessageCreateDTO, MessageResponseDTO
 from application.use_cases.message.create_message import CreateMessage
 from application.use_cases.message.get_message_by_id import GetMessageById
 from application.use_cases.message.list_message_by_user import ListMessageByUser
