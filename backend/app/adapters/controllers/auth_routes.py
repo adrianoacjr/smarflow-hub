@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 
 from adapters.dtos.auth_dto import LoginDTO, TokenResponseDTO
 from application.use_cases.user.authenticate_user import AuthenticateUser

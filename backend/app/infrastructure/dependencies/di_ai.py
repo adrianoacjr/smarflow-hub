@@ -11,14 +11,12 @@ class DIAI:
     def build(
         self,
         session: AsyncSession,
-    ) -> tuple[
-        GenerateAIReply,
-        SaveOutboundMessage,
-        ProcessAIReply,
-    ]:
-        return (
-            ProcessAIReply(self.get_generate_ai_reply_service(), self.get_save_outbound_message_service(session))
+    ) -> ProcessAIReply:
+        return ProcessAIReply(
+            self.get_generate_ai_reply_service(),
+            self.get_save_outbound_message_service(session),
         )
+
     def get_message_repository(self, session: AsyncSession) -> MessageRepositoryPostgres:
         return MessageRepositoryPostgres(session)
 

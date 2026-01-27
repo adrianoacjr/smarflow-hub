@@ -40,8 +40,11 @@ async def lifespan(app: FastAPI):
 
         app.include_router(message_router)
 
+        process_ai_reply = di_ai.build(session)
+
         webhook_whatsapp_router = build_webhook_whatsapp_router(
             receive_whatsapp_message=receive_whatsapp_message,
+            process_ai_reply=process_ai_reply,
         )
 
         app.include_router(webhook_whatsapp_router, prefix="/webhooks")
@@ -81,8 +84,6 @@ async def lifespan(app: FastAPI):
         )
 
         app.include_router(test_db_router, prefix="/health")
-
-        process_ai_reply = di_ai.build(session)
 
         gpt_routes = build_gpt_router(
             process_ai_reply=process_ai_reply,
