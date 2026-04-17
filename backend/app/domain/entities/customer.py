@@ -12,9 +12,9 @@ class Customer:
     name: str
     origin: CustomerOrigin
     created_at: datetime
-    tags: list[str] = field(default_factory=list)
-    email: Optional[str] = None
-    phone: Optional[str] = None
+    tags: list[CustomerTag] = field(default_factory=list)
+    email: Optional[EmailAddress] = None
+    phone: Optional[PhoneNumber] = None
     id: Optional[int] = None
 
     def add_tag(self, tag: CustomerTag) -> None:
