@@ -5,11 +5,12 @@ from typing import Optional
 from domain.enums.message_direction import MessageDirection
 from domain.enums.message_source import MessageSource
 from domain.enums.message_status import MessageStatus
+from domain.value_objects.message_content import MessageContent
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Message:
     customer_id: int
-    content: str
+    content: MessageContent
     direction: MessageDirection
     source: MessageSource
     created_at: datetime

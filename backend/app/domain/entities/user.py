@@ -3,11 +3,12 @@ from datetime import datetime
 from typing import Optional
 
 from domain.enums.access_level import AccessLevel
+from domain.value_objects.email_address import EmailAddress
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class User:
     name: str
-    email: str
+    email: EmailAddress
     password_hash: str = field(repr=False)
     access_level: AccessLevel
     created_at: datetime
