@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from adapters.dtos.user_dto import UserCreateDTO, UserResponseDTO
 from application.use_cases.user.create_user import CreateUser
 from application.use_cases.user.delete_user import DeleteUser
-from application.use_cases.user.get_all_users import GetAllUsers
+from backend.app.application.use_cases.user.list_users import GetAllUsers
 from application.use_cases.user.get_user import GetUser
 from application.use_cases.user.update_user import UpdateUser
 from infrastructure.dependencies.di_user import di_user
