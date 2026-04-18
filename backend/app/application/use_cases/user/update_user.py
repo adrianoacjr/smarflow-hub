@@ -32,12 +32,6 @@ class UpdateUser:
             if command.access_level is not None:
                 user.change_access_level(command.access_level)
 
-            if command.active is not None:
-                if command.active:
-                    user.activate()
-                else:
-                    user.deactivate()
-
             return await self.repo.update(user)
 
                 

@@ -6,3 +6,15 @@ class InvalidPasswordError(Exception):
 
 class UserNotFoundError(Exception):
     pass
+
+class UnauthenticatedUserError(Exception):
+    pass
+
+class InactiveUserError(Exception):
+    pass
+
+class InvalidCredentialsError(Exception):
+    pass
+
+class SamePasswordError(Exception):
+    pass

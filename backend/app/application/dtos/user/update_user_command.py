@@ -8,4 +8,3 @@ class UpdateUserCommand:
     name: str | None = None
     email: str | None = None
     access_level: AccessLevel | None = None
-    active: bool | None = None
