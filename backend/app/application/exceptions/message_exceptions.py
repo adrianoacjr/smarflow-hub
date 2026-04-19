@@ -6,3 +6,12 @@ class CustomerNotFoundError(Exception):
 
 class UserNotFoundError(Exception):
     pass
+
+class MessageNotFoundError(Exception):
+    pass
+
+class InvalidMessageFlowError(Exception):
+    pass
+
+class MessageDeliveryError(Exception):
+    pass

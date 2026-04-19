@@ -31,10 +31,18 @@ class Message:
             raise ValueError("message must have content or attachments")
 
     def mark_as_sent(self) -> None:
+        if self.direction != MessageDirection.OUTBOUND:
+            raise ValueError("only outbound messages can be marked as sent")
+        if self.status != MessageStatus.PENDING:
+            raise ValueError("only pending messages can be marked as sent")
         self.status = MessageStatus.SENT
 
     def mark_as_delivered(self) -> None:
+        if self.status != MessageStatus.SENT:
+            raise ValueError("only sent messages can be marked as delivered")
         self.status = MessageStatus.DELIVERED
 
     def mark_as_failed(self) -> None:
+        if self.direction != MessageDirection.OUTBOUND:
+            raise ValueError("only outbound messages can be marked as failed")
         self.status = MessageStatus.FAILED

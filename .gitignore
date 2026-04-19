@@ -12,6 +12,7 @@ merged_program.py
 smartflow_hub_dependencies.png
 create_dot.py
 create_dot2.py
+project_tree*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

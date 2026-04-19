@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Optional
+from uuid import UUID
 
 from domain.entities.message import Message
 
@@ -8,11 +9,12 @@ class IMessageRepository(ABC):
     async def create(self, message: Message) -> Message:
         raise NotImplementedError
     
+    @abstractmethod
     async def update(self, message: Message) -> Message:
         raise NotImplementedError
 
     @abstractmethod
-    async def get_by_id(self, message_id: int) -> Optional[Message]:
+    async def get_by_id(self, message_id: UUID) -> Optional[Message]:
         raise NotImplementedError
 
     @abstractmethod
@@ -24,5 +26,5 @@ class IMessageRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def delete(self, message_id: int) -> bool:
+    async def delete(self, message_id: UUID) -> bool:
         pass
