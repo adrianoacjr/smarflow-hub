@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application.use_cases.integration.generate_ai_reply import GenerateAIReply
-from application.use_cases.message.save_outbound_message import SaveOutboundMessage
+from backend.app.application.use_cases.message.queue_outbound_message import SaveOutboundMessage
 from application.use_cases.integration.process_ai_reply import ProcessAIReply
 from infrastructure.gateways.ai_responder_gateway_openai import AIResponderGatewayOpenai
 from infrastructure.gateways.openai_client import OpenAIClientFactory

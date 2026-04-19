@@ -1,6 +1,6 @@
 from domain.entities.message import Message
 from application.use_cases.integration.generate_ai_reply import GenerateAIReply
-from application.use_cases.message.save_outbound_message import SaveOutboundMessage
+from backend.app.application.use_cases.message.queue_outbound_message import SaveOutboundMessage
 
 class ProcessAIReply:
     def __init__(self, ai_service: GenerateAIReply, save_outbound_message: SaveOutboundMessage):
