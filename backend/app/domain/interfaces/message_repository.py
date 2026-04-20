@@ -20,11 +20,19 @@ class IMessageRepository(ABC):
     @abstractmethod
     async def list_by_user(self, user_id: int, limit: int = 50, offset: int = 0) -> list[Message]:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def count_by_user(self, user_id: int) -> int:
+        raise NotImplementedError
 
     @abstractmethod
     async def list_by_customer(self, customer_id: int, limit: int = 50, offset: int = 0) -> list[Message]:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def count_by_customer(self, customer_id: int) -> int:
+        raise NotImplementedError
 
     @abstractmethod
     async def delete(self, message_id: UUID) -> bool:
-        pass
+        raise NotImplementedError
