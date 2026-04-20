@@ -46,3 +46,19 @@ class Message:
         if self.direction != MessageDirection.OUTBOUND:
             raise ValueError("only outbound messages can be marked as failed")
         self.status = MessageStatus.FAILED
+
+    def update_status(self, new_status: MessageStatus) -> None:
+        valid_transitions = {
+            MessageStatus.PENDING: {MessageStatus.SENT, MessageStatus.FAILED},
+            MessageStatus.SENT: {MessageStatus.DELIVERED, MessageStatus.FAILED},
+            MessageStatus.RECEIVED: set(),
+            MessageStatus.DELIVERED: set(),
+            MessageStatus.FAILED: set(),
+        }
+
+        allowed = valid_transitions.get(self.status, set())
+        if new_status not in allowed:
+            raise ValueError(f"Invalid status transition: {self.status}) -> {new_status}")
+        
+        self.status = new_status
+

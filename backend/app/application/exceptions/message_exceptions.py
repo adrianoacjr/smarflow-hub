@@ -15,3 +15,6 @@ class InvalidMessageFlowError(Exception):
 
 class MessageDeliveryError(Exception):
     pass
+
+class InvalidMessageStatusTransitionError(Exception):
+    pass
