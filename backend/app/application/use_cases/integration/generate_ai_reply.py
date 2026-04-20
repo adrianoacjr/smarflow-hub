@@ -1,11 +1,10 @@
-from application.interfaces.ai_responder_gateway import IAIResponderGateway
+from application.interfaces.ai_responder_gateway import AIResponse, IAIResponderGateway
 
 class GenerateAIReply:
-    def __init__(self, responder_service: IAIResponderGateway):
-        self.responder = responder_service
+    def __init__(self, responder: IAIResponderGateway) -> None:
+        self.responder = responder
 
-    async def generate_reply(self, message: str) -> str:
-        if not message.strip():
-            raise ValueError("Empty message")
-        
-        return await self.responder.generate_response(message)
+    async def execute(self, messages: list[dict[str, str]]) -> AIResponse:
+        if not messages:
+            raise ValueError("Message history cannot be empty")
+        return await self.responder.generate_response(messages)
