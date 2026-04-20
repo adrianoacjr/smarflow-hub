@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 from domain.enums.customer_origin import CustomerOrigin
+from domain.enums.message_source import MessageSource
 from domain.value_objects.customer_tag import CustomerTag
 from domain.value_objects.email_address import EmailAddress
 from domain.value_objects.phone_number import PhoneNumber
@@ -12,6 +13,8 @@ class Customer:
     name: str
     origin: CustomerOrigin
     created_at: datetime
+    source: Optional[MessageSource] = None
+    source_ref: Optional[str] = None
     tags: list[CustomerTag] = field(default_factory=list)
     email: Optional[EmailAddress] = None
     phone: Optional[PhoneNumber] = None

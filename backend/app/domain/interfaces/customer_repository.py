@@ -39,7 +39,7 @@ class ICustomerRepository(ABC):
     async def create_placeholder(
         self,
         source: MessageSource,
-        source_customer_ref: str,
+        source_ref: str,
         name: str | None = None,
     ) -> Customer:
         raise NotImplementedError
@@ -47,3 +47,12 @@ class ICustomerRepository(ABC):
     @abstractmethod
     async def list(self, limit: int = 50, offset: int = 0) -> list[Customer]:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def count(self) -> int:
+        raise NotImplementedError
+    
+    @abstractmethod
+    async def delete(self, customer_id: int) -> bool:
+        raise NotImplementedError
+    
