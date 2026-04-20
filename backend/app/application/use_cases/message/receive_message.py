@@ -30,7 +30,7 @@ class ReceiveMessage:
         if user is None:
             raise UserNotFoundError("User not found")
         
-        customer = await self.customer_repo.get_by_souce_ref(
+        customer = await self.customer_repo.get_by_source_ref(
             source=command.source,
             source_customer_ref=command.source_customer_ref,
         )
@@ -38,7 +38,7 @@ class ReceiveMessage:
         if customer is None:
             customer = await self.customer_repo.create_placeholder(
                 source = command.source,
-                source_customer_ref = command.srouce_customer_ref,
+                source_customer_ref = command.source_customer_ref,
                 name = command.customer_name,
             )
 

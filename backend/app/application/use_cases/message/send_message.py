@@ -2,7 +2,7 @@ from domain.entities.message import Message
 from domain.enums.message_direction import MessageDirection
 from domain.enums.message_status import MessageStatus
 from domain.interfaces.message_repository import IMessageRepository
-from backend.app.application.dtos.message.send_message_command import SendMessageCommand
+from application.dtos.message.send_message_command import SendMessageCommand
 from application.exceptions.message_exceptions import (
     InvalidMessageFlowError,
     MessageNotFoundError,

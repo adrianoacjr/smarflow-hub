@@ -8,7 +8,7 @@ from domain.interfaces.customer_repository import ICustomerRepository
 from domain.interfaces.message_repository import IMessageRepository
 from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.message_content import MessageContent
-from backend.app.application.dtos.message.queue_outbound_message_command import QueueOutboundMessageCommand
+from application.dtos.message.queue_outbound_message_command import QueueOutboundMessageCommand
 from application.exceptions.message_exceptions import (
     CustomerNotFoundError,
     UserNotFoundError
@@ -38,7 +38,7 @@ class QueueOutboundMessage:
             id = uuid4(),
             customer_id = command.customer_id,
             user_id = command.user_id,
-            contend = MessageContent(command.content),
+            content = MessageContent(command.content),
             direction = MessageDirection.OUTBOUND,
             source = command.source,
             created_at = datetime.now(timezone.utc),
