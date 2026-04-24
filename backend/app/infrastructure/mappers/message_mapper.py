@@ -1,4 +1,6 @@
 from domain.entities.message import Message
+from domain.value_objects.message_content import MessageContent
+from domain.enums.message_status import MessageStatus
 from infrastructure.orm.message_orm import MessageORM
 
 class MessageMapper:
@@ -8,12 +10,13 @@ class MessageMapper:
             id=orm.id,
             user_id=orm.user_id,
             customer_id=orm.customer_id,
-            content=orm.content,
+            content=MessageContent(orm.content) if orm.content else None,
             direction=orm.direction,
             source=orm.source,
             created_at=orm.created_at,
             automated=orm.automated,
-            status=orm.status
+            status=MessageStatus(orm.status),
+            attachments=tuple()
         )
     
     @staticmethod
@@ -27,6 +30,7 @@ class MessageMapper:
             source=domain.source,
             created_at=domain.created_at,
             automated=domain.automated,
-            status=domain.status
+            status=domain.status,
+            attachments=domain.attachments
         )
         return orm

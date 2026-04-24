@@ -1,4 +1,6 @@
 from domain.entities.user import User
+from domain.enums.access_level import AccessLevel
+from domain.value_objects.email_address import EmailAddress
 from infrastructure.orm.user_orm import UserORM
 
 class UserMapper:
@@ -7,9 +9,9 @@ class UserMapper:
         domain = User(
             id=orm.id,
             name=orm.name,
-            email=orm.email,
+            email=EmailAddress(orm.email),
             password_hash=orm.password_hash,
-            access_level=orm.access_level,
+            access_level=AccessLevel(orm.access_level),
             created_at=orm.created_at,
             active=orm.active
         )

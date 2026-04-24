@@ -1,16 +1,18 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Enum
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import UUID as PGUUID
+import uuid
 
 from infrastructure.orm.base import Base
 
 class MessageORM(Base):
     __tablename__ = "messages"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     customer_id = Column(Integer, ForeignKey('customers.id'), nullable=False)
-    content = Column(String, nullable=False)
+    content = Column(String, nullable=True)
     direction = Column(
         Enum(
             "inbound",

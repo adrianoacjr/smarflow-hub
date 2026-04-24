@@ -38,6 +38,14 @@ class MessageRepositoryPostgres(IMessageRepository):
         orms = result.scalars().all()
         return [MessageMapper.orm_to_domain(o) for o in orms]
     
+    async def update(self, message: Message) -> Message:
+        orm = await self.session.get(MessageORM, message.id)
+        orm.status = message.status.value
+        orm.content = message.content.value if message.content else None
+        await self.session.commit()
+        await self.session.refresh(orm)
+        return MessageMapper.orm_to_domain(orm)
+    
     async def delete(self, message_id: int) -> None:
         await self.session.execute(
             delete(MessageORM).where(MessageORM.id == message_id)

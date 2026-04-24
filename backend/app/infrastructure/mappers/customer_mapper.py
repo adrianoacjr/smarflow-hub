@@ -1,4 +1,7 @@
 from domain.entities.customer import Customer
+from domain.value_objects.email_address import EmailAddress
+from domain.value_objects.phone_number import PhoneNumber
+from domain.enums.customer_origin import CustomerOrigin
 from infrastructure.orm.customer_orm import CustomerORM
 
 class CustomerMapper:
@@ -7,9 +10,9 @@ class CustomerMapper:
         domain = Customer(
             id=orm.id,
             name=orm.name, 
-            email=orm.email,
-            phone=orm.phone,
-            origin=orm.origin,
+            email=EmailAddress(orm.email) if orm.email else None,
+            phone=PhoneNumber(orm.phone) if orm.phone else None,
+            origin=CustomerOrigin(orm.origin),
             tags=orm.tags,
             created_at=orm.created_at
         )
