@@ -33,7 +33,7 @@ class AnalyzeMessage:
         self.ai_gateway = ai_gateway
         self.queue_outbound = queue_outbound
         self.create_conversation = create_conversation
-        self.escalate_conversaiton = escalate_conversation
+        self.escalate_conversation = escalate_conversation
 
     async def execute(self, command: AnalyzeMessageCommand) -> AnalyzeMessageResult:
         inbound = await self.message_repo.get_by_id(command.inbound_message_id)
@@ -72,12 +72,12 @@ class AnalyzeMessage:
             )
         
         history = await self.message_repo.list_by_customer(
-            customer_id = inbound.customer.id,
+            customer_id = inbound.customer_id,
             limit = CONVERSATION_HISTORY_SIZE,
             offset = 0,
             order_by_created_asc = True,
         )
-        conversation_context = self._build_conversation_context(history, inbound)
+        conversation_context = self._build_context(history, inbound)
         ai_response = await self.ai_gateway.generate_response(conversation_context)
 
         if ai_response.confidence < AI_CONFIDENCE_THRESHOLD:
