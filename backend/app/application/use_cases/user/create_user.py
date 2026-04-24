@@ -29,11 +29,12 @@ class CreateUser:
         password_hash = self.password_hasher.hash(command.password)
 
         new_user = User(
-            name=command.name.strip(),
-            email=email,
-            password_hash=password_hash,
-            access_level=command.access_level,
-            created_at=datetime.now(timezone.utc),
+            name = command.name.strip(),
+            email = email,
+            password_hash = password_hash,
+            access_level = command.access_level,
+            user_type = command.user_type,
+            created_at = datetime.now(timezone.utc),
         )
         
         return await self.repo.create(new_user)
