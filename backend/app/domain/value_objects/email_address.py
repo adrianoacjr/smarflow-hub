@@ -10,7 +10,9 @@ class EmailAddress:
         if not normalized:
             raise ValueError("email cannot be empty")
         
-        if "@" not in normalized or normalized.startswith("@") or normalized.endswith("@"):
+        parts = normalized.split("@")
+
+        if len(parts) != 2 or not parts[0] or not parts[1] or "." not in parts[1]:
             raise ValueError("invalid email")
         
         object.__setattr__(self, "value", normalized)

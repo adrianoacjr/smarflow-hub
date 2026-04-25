@@ -34,15 +34,6 @@ class ICustomerRepository(ABC):
         source_customer_ref: str,
     ) -> Optional[Customer]:
         raise NotImplementedError
-    
-    @abstractmethod
-    async def create_placeholder(
-        self,
-        source: MessageSource,
-        source_ref: str,
-        name: str | None = None,
-    ) -> Customer:
-        raise NotImplementedError
 
     @abstractmethod
     async def list(self, limit: int = 50, offset: int = 0) -> list[Customer]:

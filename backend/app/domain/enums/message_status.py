@@ -6,4 +6,3 @@ class MessageStatus(StrEnum):
     SENT = "sent"
     DELIVERED = "delivered"
     FAILED = "failed"
-    ESCALATED = "escalated"
