@@ -25,7 +25,7 @@ class GetCurrentUser:
         if user is None:
             raise UserNotFoundError("User not found")
         
-        if not user.acitve:
+        if not user.active:
             raise InactiveUserError("Inactive user")
         
         return user

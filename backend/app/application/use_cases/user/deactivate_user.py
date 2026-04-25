@@ -15,7 +15,7 @@ class DeactivateUser:
         if not user.active:
             return user
         
-        user.deativate()
+        user.deactivate()
 
         return await self.repo.update(user)
     

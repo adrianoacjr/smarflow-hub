@@ -29,9 +29,9 @@ class UpdateUser:
                 
                 user.email = new_email
 
-            if command.access_level is not None:
-                user.change_access_level(command.access_level)
+        if command.access_level is not None:
+            user.change_access_level(command.access_level)
 
-            return await self.repo.update(user)
+        return await self.repo.update(user)
 
                 

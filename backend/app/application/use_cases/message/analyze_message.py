@@ -117,7 +117,7 @@ class AnalyzeMessage:
     ) -> None:
         inbound.status = MessageStatus.ESCALATED
         await self.message_repo.update(inbound)
-        await self.escalate_conversaiton.execute(
+        await self.escalate_conversation.execute(
             EscalateConversationCommand(
                 conversation_id = conversation_id,
                 reason = reason

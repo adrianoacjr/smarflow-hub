@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from uuid import uuid4
+from domain.utils.time import utcnow
 
 from domain.entities.message import Message
 from domain.enums.message_direction import MessageDirection
@@ -36,14 +37,15 @@ class CreateMessage:
         content = MessageContent(command.content)
 
         message = Message(
-            customer_id = command.customer_id,
+            id=uuid4(),
+            customer_id=command.customer_id,
             user_id=command.user_id,
-            content = content,
-            direction = command.direction,
-            source = command.source,
-            create_at = datetime.now(timezone.utc),
-            automated = command.automated,
-            status = self._define_initial_status(command.direction),
+            content=content,
+            direction=command.direction,
+            source=command.source,
+            created_at=utcnow(),
+            automated=command.automated,
+            status=self._define_initial_status(command.direction),
         )
 
         return await self.message_repo.create(message)
