@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Enum
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import UUID as PGUUID
 import uuid
+
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Enum
+from sqlalchemy.dialects.postgresql import UUID as PGUUID
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from infrastructure.orm.base import Base
 
@@ -25,39 +26,32 @@ class MessageORM(Base):
         Enum(
             "whatsapp",
             "instagram",
-            "other",
+            "system",
             name="message_source_enum"
         ),
         nullable=False
     )
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    automated = Column(Boolean, nullable=False)
     status = Column(
         Enum(
-            # Estados internos
-            "created",        # criado no sistema
-            "queued",         # pronto para envio
-            "sending",        # tentando enviar
             "received",
-
-            # Estados externos comuns
+            "pending",
             "sent",
             "delivered",
-            "read",
-
-            # Estados de falha
             "failed",
-            "rejected",
-            "expired",
-            "blocked",
-
-            # Estados especiais
-            "deleted",
-            "unsupported",
-
-            name="message_status_enum"
-        )
+            name="message_status_enum",
+        ),
+        nullable=False,
     )
+    automated = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    users = relationship("UserORM", back_populates="messages")
-    customers = relationship("CustomerORM", back_populates="messages")
+    users = relationship(
+        "UserORM",
+        back_populates="messages",
+        foreign_keys=[user_id],
+        )
+    customer = relationship(
+        "CustomerORM",
+        back_populates="messages",
+        foreign_keys=[customer_id],
+    )
