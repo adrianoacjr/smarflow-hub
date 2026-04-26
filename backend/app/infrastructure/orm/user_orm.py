@@ -1,11 +1,11 @@
 import uuid
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum
-from sqlalchemy.dialects.postgresql import UUID as PGUUID
+from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from infrastructure.orm.base import Base
+
 
 class UserORM(Base):
     __tablename__ = "users"
@@ -16,10 +16,11 @@ class UserORM(Base):
     password_hash = Column(String, nullable=False)
     access_level = Column(
         Enum("admin", "user", name="user_access_level_enum"),
-        nullable=False
+        nullable=False,
     )
     user_type = Column(
-        Enum("human", "bot", name="user_type_enum")
+        Enum("human", "bot", name="user_type_enum"),
+        nullable=False,
     )
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     active = Column(Boolean, nullable=False, default=True)
@@ -37,5 +38,5 @@ class UserORM(Base):
     agent_conversations = relationship(
         "ConversationORM",
         back_populates="assigned_agent",
-        foreign_keys="[ConversationOEM.assigned_agent_id]",
+        foreign_keys="[ConversationORM.assigned_agent_id]",
     )

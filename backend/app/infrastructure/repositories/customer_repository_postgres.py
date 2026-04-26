@@ -45,8 +45,8 @@ class CustomerRepositoryPostgres(ICustomerRepository):
         )
         orm = result.scalar_one_or_none()
         return CustomerMapper.orm_to_domain(orm) if orm else None
-    
-    async def get_by_phone_number(self, phone: PhoneNumber) -> Optional[Customer]:
+
+    async def get_by_phone(self, phone: PhoneNumber) -> Optional[Customer]:
         result = await self.session.execute(
             select(CustomerORM).where(CustomerORM.phone == phone.value)
         )

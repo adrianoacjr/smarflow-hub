@@ -3,8 +3,10 @@ import uuid
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from infrastructure.orm.base import Base
+
 
 class ConversationORM(Base):
     __tablename__ = "conversations"
@@ -12,7 +14,7 @@ class ConversationORM(Base):
     id = Column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
     bot_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    assigned_agent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    assigned_agent_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     source = Column(
         Enum("whatsapp", "instagram", "system", name="message_source_enum"),
         nullable=False,
@@ -26,7 +28,7 @@ class ConversationORM(Base):
             "abandoned",
             name="conversation_status_enum",
         ),
-        nullable=False
+        nullable=False,
     )
     created_at = Column(DateTime(timezone=True), nullable=False)
     updated_at = Column(DateTime(timezone=True), nullable=False)

@@ -1,3 +1,4 @@
+import os
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -7,7 +8,7 @@ from infrastructure.config import settings
 engine = create_async_engine(
     settings.DATABASE_URL,
     future=True,
-    echo=True,
+    echo=os.getenv("APP_ENV", "production") == "development",
 )
 
 async_session = async_sessionmaker(

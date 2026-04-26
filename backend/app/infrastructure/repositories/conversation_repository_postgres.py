@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.entities.conversation import Conversation
@@ -9,6 +9,7 @@ from domain.enums.message_source import MessageSource
 from domain.interfaces.conversation_repository import IConversationRepository
 from infrastructure.mappers.conversation_mapper import ConversationMapper
 from infrastructure.orm.conversation_orm import ConversationORM
+
 
 class ConversationRepositoryPostgres(IConversationRepository):
     def __init__(self, session: AsyncSession) -> None:
@@ -20,21 +21,21 @@ class ConversationRepositoryPostgres(IConversationRepository):
         await self.session.flush()
         await self.session.refresh(orm)
         return ConversationMapper.orm_to_domain(orm)
-    
+
     async def update(self, conversation: Conversation) -> Conversation:
         orm = await self.session.get(ConversationORM, conversation.id)
         orm.status = conversation.status.value
         orm.assigned_agent_id = conversation.assigned_agent_id
-        orm.updated_at = conversation.updated_at_at
+        orm.updated_at = conversation.updated_at
         orm.resolved_at = conversation.resolved_at
         await self.session.flush()
         await self.session.refresh(orm)
         return ConversationMapper.orm_to_domain(orm)
-    
+
     async def get_by_id(self, conversation_id: UUID) -> Conversation | None:
         orm = await self.session.get(ConversationORM, conversation_id)
         return ConversationMapper.orm_to_domain(orm) if orm else None
-    
+
     async def get_active_by_customer(
         self,
         customer_id: int,
@@ -56,7 +57,7 @@ class ConversationRepositoryPostgres(IConversationRepository):
         )
         orm = result.scalar_one_or_none()
         return ConversationMapper.orm_to_domain(orm) if orm else None
-    
+
     async def list_by_status(
         self,
         status: ConversationStatus,
@@ -71,14 +72,13 @@ class ConversationRepositoryPostgres(IConversationRepository):
             .offset(offset)
         )
         return [ConversationMapper.orm_to_domain(o) for o in result.scalars().all()]
-    
+
     async def count_by_status(self, status: ConversationStatus) -> int:
-        from sqlalchemy import func
         result = await self.session.execute(
             select(func.count()).where(ConversationORM.status == status.value)
         )
         return result.scalar_one()
-    
+
     async def list_by_customer(
         self,
         customer_id: int,
