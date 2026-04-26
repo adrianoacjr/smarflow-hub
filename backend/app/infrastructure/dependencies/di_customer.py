@@ -1,6 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.interfaces.customer_repository import ICustomerRepository
 from application.use_cases.customer.create_customer import CreateCustomer
 from application.use_cases.customer.delete_customer import DeleteCustomer
 from application.use_cases.customer.get_all_customers import GetAllCustomers
@@ -8,31 +7,20 @@ from application.use_cases.customer.get_customer import GetCustomer
 from application.use_cases.customer.update_customer import UpdateCustomer
 from infrastructure.repositories.customer_repository_postgres import CustomerRepositoryPostgres
 
-class DICustomer:
-    def build(
-        self,
-        session: AsyncSession
-    ) -> tuple[
-        CreateCustomer,
-        GetCustomer,
-        GetAllCustomers,
-        DeleteCustomer,
-        UpdateCustomer,
-    ]:
-        repo = CustomerRepositoryPostgres(session)
+def get_customer_repository(session: AsyncSession) -> CustomerRepositoryPostgres:
+    return CustomerRepositoryPostgres(session)
 
-        return (
-            CreateCustomer(repo),
-            GetCustomer(),
-            GetAllCustomers(),
-            DeleteCustomer(),
-            UpdateCustomer(),
-        )
+def get_create_customer(session: AsyncSession) -> CreateCustomer:
+    return CreateCustomer(repo=get_customer_repository(session))
 
-        # def get_user_repository(self, session: AsyncSession) -> ICustomerRepository:
-        #     return CustomerRepositoryPostgres(session)
-        
-        # def get_create_customer_service(self, session: AsyncSession) -> CreateCustomer:
-        #     return CreateCustomer(self.get_user_repository(session))
+def get_get_customer(session: AsyncSession) -> GetCustomer:
+    return GetCustomer(customer_repo=get_customer_repository(session))
 
-di_customer = DICustomer()
+def get_get_all_customers(session: AsyncSession) -> GetAllCustomers:
+    return GetAllCustomers(customer_repo=get_customer_repository(session))
+
+def get_update_customer(session: AsyncSession) -> UpdateCustomer:
+    return UpdateCustomer(customer_repo=get_customer_repository(session))
+
+def get_delete_customer(session: AsyncSession) -> DeleteCustomer:
+    return DeleteCustomer(customer_repo=get_customer_repository(session))

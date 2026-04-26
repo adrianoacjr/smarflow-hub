@@ -1,39 +1,52 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from application.use_cases.integration.receive_whatsapp_message import ReceiveWhatsAppMessage
 from application.use_cases.message.create_message import CreateMessage
-from application.use_cases.message.get_message_by_id import GetMessageById
-from application.use_cases.message.list_message_by_user import ListMessageByUser
-from application.use_cases.message.list_message_by_customer import ListMessageByCustomer
 from application.use_cases.message.delete_message import DeleteMessage
+from application.use_cases.message.get_message_by_id import GetMessageById
+from application.use_cases.message.list_message_by_customer import ListMessageByCustomer
+from application.use_cases.message.list_message_by_user import ListMessageByUser
+from application.use_cases.message.queue_outbound_message import QueueOutboundMessage
+from infrastructure.repositories.customer_repository_postgres import CustomerRepositoryPostgres
 from infrastructure.repositories.message_repository_postgres import MessageRepositoryPostgres
+from infrastructure.repositories.user_repository_postgres import UserRepositoryPostgres
 
-class DIMessage:
-    def build(
-        self,
-        session: AsyncSession,
-    ) -> tuple[
-        ReceiveWhatsAppMessage,
-        CreateMessage,
-        GetMessageById,
-        ListMessageByUser,
-        ListMessageByCustomer,
-        DeleteMessage,
-    ]:
-        repo = MessageRepositoryPostgres(session)
+def get_message_repository(session: AsyncSession) -> MessageRepositoryPostgres:
+    return MessageRepositoryPostgres(session)
 
-        return (
-            ReceiveWhatsAppMessage(repo),
-            CreateMessage(),
-            GetMessageById(),
-            ListMessageByUser(),
-            ListMessageByCustomer(),
-            DeleteMessage(),
-        )
-    # def get_message_repository(self, session: AsyncSession) -> IMessageRepository:
-    #     return MessageRepositoryPostgres(session)
 
-    # def get_receive_whatsapp_message(self, session: AsyncSession) -> ReceiveWhatsAppMessage:
-    #     return ReceiveWhatsAppMessage(self.get_message_repository(session))
-    
-di_message = DIMessage()
+def get_create_message(session: AsyncSession) -> CreateMessage:
+    return CreateMessage(
+        message_repo=get_message_repository(session),
+        customer_repo=CustomerRepositoryPostgres(session),
+        user_repo=UserRepositoryPostgres(session),
+    )
+
+
+def get_get_message_by_id(session: AsyncSession) -> GetMessageById:
+    return GetMessageById(message_repo=get_message_repository(session))
+
+
+def get_list_messages_by_user(session: AsyncSession) -> ListMessageByUser:
+    return ListMessageByUser(
+        message_repo=get_message_repository(session),
+        user_repo=UserRepositoryPostgres(session),
+    )
+
+
+def get_list_messages_by_customer(session: AsyncSession) -> ListMessageByCustomer:
+    return ListMessageByCustomer(
+        message_repo=get_message_repository(session),
+        customer_repo=CustomerRepositoryPostgres(session),
+    )
+
+
+def get_queue_outbound_message(session: AsyncSession) -> QueueOutboundMessage:
+    return QueueOutboundMessage(
+        message_repo=get_message_repository(session),
+        customer_repo=CustomerRepositoryPostgres(session),
+        user_repo=UserRepositoryPostgres(session),
+    )
+
+
+def get_delete_message(session: AsyncSession) -> DeleteMessage:
+    return DeleteMessage()
