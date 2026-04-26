@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     OPENAI_TIMEOUT: int = 20
     OPENAI_MAX_RETRIES: int = 3
     OPENAI_RETRY_BACKOFF: float = 1.5
+    SECRET_KEY: str
+    ACCESS_TOKEN_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     model_config = SettingsConfigDict(
         env_file=".env",

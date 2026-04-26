@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application.use_cases.user.authenticate_user import AuthenticateUser
-from adapters.security.token_service_jwt import TokenServiceJWT
+from backend.app.infrastructure.gateways.token_service_jwt import TokenServiceJWT
 from infrastructure.repositories.user_repository_postgres import UserRepositoryPostgres
 
 class DIAuth:
