@@ -55,7 +55,8 @@ class MessageORM(Base):
         foreign_keys=[customer_id],
     )
 
-    messages = relationship(
+    conversation = relationship(
         "ConversationORM",
-        foreign_keys="[conversation_id]",
+        foreign_keys=[conversation_id],
+        back_populates="messages",
     )

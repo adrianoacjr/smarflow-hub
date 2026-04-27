@@ -15,6 +15,7 @@ create_dot2.py
 project_tree*
 # Byte-compiled / optimized / DLL files
 __pycache__/
+migrations/versions/
 *.py[codz]
 *$py.class
 
