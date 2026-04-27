@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from domain.enums.message_direction import MessageDirection
@@ -25,6 +26,7 @@ class Message:
     automated: bool
     status: MessageStatus
     attachments: tuple[MessageAttachment, ...] = field(default_factory=tuple)
+    conversation_id: Optional[UUID] = None
 
     def __post_init__(self) -> None:
         if self.content is None and not self.attachments:

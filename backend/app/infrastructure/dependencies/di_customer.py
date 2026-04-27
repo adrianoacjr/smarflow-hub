@@ -4,6 +4,7 @@ from application.use_cases.customer.create_customer import CreateCustomer
 from application.use_cases.customer.delete_customer import DeleteCustomer
 from application.use_cases.customer.get_all_customers import GetAllCustomers
 from application.use_cases.customer.get_customer import GetCustomer
+from application.use_cases.customer.get_or_create_customer import GetOrCreateCustomer
 from application.use_cases.customer.update_customer import UpdateCustomer
 from infrastructure.repositories.customer_repository_postgres import CustomerRepositoryPostgres
 
@@ -21,6 +22,9 @@ def get_get_all_customers(session: AsyncSession) -> GetAllCustomers:
 
 def get_update_customer(session: AsyncSession) -> UpdateCustomer:
     return UpdateCustomer(customer_repo=get_customer_repository(session))
+
+def get_get_or_create_customer(session: AsyncSession) -> GetOrCreateCustomer:
+    return GetOrCreateCustomer(repo=get_customer_repository(session))
 
 def get_delete_customer(session: AsyncSession) -> DeleteCustomer:
     return DeleteCustomer(customer_repo=get_customer_repository(session))
