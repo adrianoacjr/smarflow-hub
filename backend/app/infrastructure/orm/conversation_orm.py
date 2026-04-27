@@ -45,3 +45,9 @@ class ConversationORM(Base):
         back_populates="agent_conversations",
         foreign_keys=[assigned_agent_id],
     )
+
+    messages = relationship(
+        "MessageORM",
+        foreign_keys="[MessageORM.conversation_id]",
+        back_populates="conversation",
+    )

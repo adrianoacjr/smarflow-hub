@@ -56,7 +56,6 @@ class MessageORM(Base):
     )
 
     messages = relationship(
-        "MessageORM",
-        foreign_keys="[MessageORM.conversation_id]",
-        back_populates="conversation",
+        "ConversationORM",
+        foreign_keys="[conversation_id]",
     )
