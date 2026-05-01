@@ -29,8 +29,6 @@ services:
         condition: service_healthy
     volumes:
       - ./backend/app:/app
-      - ./backend/migrations:/app/migrations
-      - ./backend/alembic.ini:/app/alembic.ini
     working_dir: /app
     command: alembic upgrade head
     restart: "no"

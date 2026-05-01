@@ -1,6 +1,4 @@
 import asyncio
-import os
-import sys
 from logging.config import fileConfig
 
 from sqlalchemy import pool
@@ -8,8 +6,6 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
-
-sys.path.inset(0, os.path.join(os.path.dirname(__file__), "..", "app"))
 
 from infrastructure.orm.base import Base
 from infrastructure.orm.user_orm import UserORM
