@@ -8,6 +8,10 @@ from application.use_cases.message.list_message_by_user import ListMessageByUser
 from application.use_cases.message.queue_outbound_message import QueueOutboundMessage
 from application.use_cases.message.analyze_message import AnalyzeMessage
 from application.use_cases.message.receive_message import ReceiveMessage
+from application.use_cases.message.get_all_messages import (
+    GetMessagesByCustomer,
+    GetMessageByUser,
+)
 from infrastructure.repositories.message_repository_postgres import MessageRepositoryPostgres
 from infrastructure.dependencies.di_customer import (
     get_customer_repository,
@@ -58,6 +62,16 @@ def get_received_message(session: AsyncSession) -> ReceiveMessage:
         message_repo=get_message_repository(session),
         user_repo=get_user_repository(session),
         get_or_create_customer=get_get_or_create_customer(session),
+    )
+
+def get_message_by_customer(session: AsyncSession) -> GetMessagesByCustomer:
+    return GetMessagesByCustomer(
+        message_repo=get_message_repository(session),
+    )
+
+def get_message_by_user(session: AsyncSession) -> GetMessageByUser:
+    return GetMessageByUser(
+        message_repo=get_message_repository(session),
     )
 
 def get_delete_message(session: AsyncSession) -> DeleteMessage:
