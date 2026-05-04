@@ -1,10 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application.use_cases.user.authenticate_user import AuthenticateUser
+from application.use_cases.user.change_user_password import ChangeUserPassword
 from application.use_cases.user.create_user import CreateUser
+from application.use_cases.user.deactivate_user import DeactivateUser
 from application.use_cases.user.delete_user import DeleteUser
+from application.use_cases.user.get_current_user import GetCurrentUser
 from application.use_cases.user.get_user import GetUser
+from application.use_cases.user.list_users import ListUsers
 from application.use_cases.user.update_user import UpdateUser
+from application.interfaces.user_context import IUserContext
 from infrastructure.gateways.bcrypt_password_hasher import BcryptPasswordHasher
 from infrastructure.gateways.token_service_jwt import TokenServiceJWT
 from infrastructure.repositories.user_repository_postgres import UserRepositoryPostgres
@@ -39,8 +44,29 @@ def get_authenticate_user(session: AsyncSession) -> AuthenticateUser:
 def get_get_user(session: AsyncSession) -> GetUser:
     return GetUser(repo=get_user_repository(session))
 
+def get_list_users(session: AsyncSession) -> ListUsers:
+    return ListUsers(repo=get_user_repository(session))
+
 def get_update_user(session: AsyncSession) -> UpdateUser:
     return UpdateUser(repo=get_user_repository(session))
 
+def get_change_user_password(session: AsyncSession) -> ChangeUserPassword:
+    return ChangeUserPassword(
+        repo=get_user_repository(session),
+        password_hasher=get_password_hasher(),
+    )
+
+def get_deactivate_user(session: AsyncSession) -> DeactivateUser:
+    return DeactivateUser(repo=get_user_repository(session))
+
 def get_delete_user(session: AsyncSession) -> DeleteUser:
     return DeleteUser(repo=get_user_repository(session))
+
+def get_get_current_user(
+    session: AsyncSession,
+    user_context: IUserContext,
+) -> GetCurrentUser:
+    return GetCurrentUser(
+        repo=get_user_repository(session),
+        user_context=user_context,
+    )

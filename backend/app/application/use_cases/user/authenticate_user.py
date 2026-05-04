@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.email_address import EmailAddress
 from application.dtos.user.authenticate_user_command import AuthenticateUserCommand
@@ -7,8 +5,6 @@ from application.dtos.user.authentication_result import AuthenticationResult
 from application.exceptions.auth_exceptions import InvalidCredentialsError, InactiveUserError
 from application.interfaces.password_hasher import IPasswordHasher
 from application.interfaces.token_service import ITokenService
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 class AuthenticateUser:
     def __init__(
@@ -36,10 +32,10 @@ class AuthenticateUser:
         
         access_token = self.token_service.create_access_token(
             subject=str(user.id),
-            expires_in=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
             extra_claims={
                 "email": str(user.email),
                 "access_level": user.access_level.value,
+                "user_type": user.user_type.value,
             },
         )
 

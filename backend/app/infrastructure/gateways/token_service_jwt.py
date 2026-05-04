@@ -1,24 +1,23 @@
 from datetime import timedelta
+from typing import Optional
 
 from jose import jwt, JWTError
 
+from domain.utils.time import utcnow
 from application.interfaces.token_service import ITokenService
-from infrastructure.config import settings
 
 class TokenServiceJWT(ITokenService):
     def __init__(self, secret_key: str, algorithm: str, expire_minutes: int) -> None:
         self.secret_key = secret_key
         self.algorithm = algorithm
-        self.expire_minutes = expire_minutes
+        self.expire_minutes = timedelta(minutes=expire_minutes)
 
     def create_access_token(
         self,
         subject: str,
-        expires_in: timedelta,
-        extra_claims: dict | None = None,
+        extra_claims: Optional[dict] = None,
+        expires_in: Optional[timedelta] = None,
     ) -> str:
-        from domain.utils.time import utcnow
-
         expire = utcnow() + expires_in
         payload: dict = {"sub": subject, "exp": expire}
 
