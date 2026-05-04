@@ -8,6 +8,7 @@ from domain.value_objects.email_address import EmailAddress
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class User:
+    client_id: int
     name: str
     email: EmailAddress
     password_hash: str = field(repr=False)

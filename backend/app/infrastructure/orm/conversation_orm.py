@@ -12,6 +12,7 @@ class ConversationORM(Base):
     __tablename__ = "conversations"
 
     id = Column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False, index=True)
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
     bot_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     assigned_agent_id = Column(Integer, ForeignKey("users.id"), nullable=True)
@@ -34,6 +35,7 @@ class ConversationORM(Base):
     updated_at = Column(DateTime(timezone=True), nullable=False)
     resolved_at = Column(DateTime(timezone=True), nullable=True)
 
+    client = relationship("ClientORM", back_populates="conversations")
     customer = relationship("CustomerORM", back_populates="conversations")
     bot_user = relationship(
         "UserORM",

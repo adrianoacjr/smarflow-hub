@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import func, select
@@ -32,8 +33,14 @@ class ConversationRepositoryPostgres(IConversationRepository):
         await self.session.refresh(orm)
         return ConversationMapper.orm_to_domain(orm)
 
-    async def get_by_id(self, conversation_id: UUID) -> Conversation | None:
-        orm = await self.session.get(ConversationORM, conversation_id)
+    async def get_by_id(self, client_id: int, conversation_id: UUID) -> Optional[Conversation]:
+        result = await self.session.execute(
+            select(ConversationORM).where(
+                ConversationORM.client_id == client_id,
+                ConversationORM.id == conversation_id,
+            )
+        )
+        orm = result.scalar_one_or_none()
         return ConversationMapper.orm_to_domain(orm) if orm else None
 
     async def get_active_by_customer(
@@ -79,15 +86,19 @@ class ConversationRepositoryPostgres(IConversationRepository):
         )
         return result.scalar_one()
 
-    async def list_by_customer(
-        self,
-        customer_id: int,
-        limit: int = 50,
-        offset: int = 0,
-    ) -> list[Conversation]:
+    async def list_by_customer(self, client_id: int, customer_id: int) -> list[Conversation]:
+        result = await self.session.execute(
+            select(ConversationORM).where(
+                ConversationORM.client_id == client_id,
+                ConversationORM.customer_id == customer_id,
+            )
+        )
+        return [ConversationMapper.orm_to_domain(o) for o in result.scalars().all()]
+    
+    async def list(self, client_id: int, limit: int = 50, offset: int = 0) -> list[Conversation]:
         result = await self.session.execute(
             select(ConversationORM)
-            .where(ConversationORM.customer_id == customer_id)
+            .where(ConversationORM.client_id == client_id)
             .order_by(ConversationORM.created_at.desc())
             .limit(limit)
             .offset(offset)

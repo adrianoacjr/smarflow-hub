@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -9,10 +9,14 @@ from infrastructure.orm.base import Base
 
 class UserORM(Base):
     __tablename__ = "users"
+    __table_args__ = (
+        UniqueConstraint("client_id", "email", name="uq_users_client_email"),
+    )
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False, index=True)
     name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
     access_level = Column(
         Enum("admin", "user", name="user_access_level_enum"),
@@ -25,6 +29,7 @@ class UserORM(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     active = Column(Boolean, nullable=False, default=True)
 
+    client = relationship("ClientORM", back_populates="users")
     messages = relationship(
         "MessageORM",
         back_populates="users",

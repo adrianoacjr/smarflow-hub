@@ -4,8 +4,8 @@ from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.entities.customer import Customer
-from domain.enums.message_source import MessageSource
 from domain.interfaces.customer_repository import ICustomerRepository
+from domain.enums.message_source import MessageSource
 from domain.value_objects.email_address import EmailAddress
 from domain.value_objects.phone_number import PhoneNumber
 from infrastructure.mappers.customer_mapper import CustomerMapper
@@ -35,20 +35,32 @@ class CustomerRepositoryPostgres(ICustomerRepository):
         await self.session.refresh(orm)
         return CustomerMapper.orm_to_domain(orm)
     
-    async def get_by_id(self, customer_id: int) -> Optional[Customer]:
-        orm = await self.session.get(CustomerORM, customer_id)
+    async def get_by_id(self, client_id: int, customer_id: int) -> Optional[Customer]:
+        result = await self.session.execute(
+            select(CustomerORM).where(
+                CustomerORM.client_id == client_id,
+                CustomerORM.id == customer_id,
+            )
+        )
+        orm = result.scalar_one_or_none()
         return CustomerMapper.orm_to_domain(orm) if orm else None
     
-    async def get_by_email(self, email: EmailAddress) -> Optional[Customer]:
+    async def get_by_email(self, client_id: int, email: EmailAddress) -> Optional[Customer]:
         result = await self.session.execute(
-            select(CustomerORM).where(CustomerORM.email == email.value)
+            select(CustomerORM).where(
+                CustomerORM.client_id == client_id,
+                CustomerORM.email == email.value
+            )
         )
         orm = result.scalar_one_or_none()
         return CustomerMapper.orm_to_domain(orm) if orm else None
 
-    async def get_by_phone(self, phone: PhoneNumber) -> Optional[Customer]:
+    async def get_by_phone(self, client_id: int, phone: PhoneNumber) -> Optional[Customer]:
         result = await self.session.execute(
-            select(CustomerORM).where(CustomerORM.phone == phone.value)
+            select(CustomerORM).where(
+                CustomerORM.client_id == client_id,
+                CustomerORM.phone == phone.value
+            )
         )
         orm = result.scalar_one_or_none()
         return CustomerMapper.orm_to_domain(orm) if orm else None
@@ -67,9 +79,10 @@ class CustomerRepositoryPostgres(ICustomerRepository):
         orm = result.scalar_one_or_none()
         return CustomerMapper.orm_to_domain(orm) if orm else None
     
-    async def list(self, limit = 50, offset: int = 0) -> list[Customer]:
+    async def list(self, client_id: int, limit = 50, offset: int = 0) -> list[Customer]:
         result = await self.session.execute(
             select(CustomerORM)
+            .where(CustomerORM.client_id == client_id)
             .order_by(CustomerORM.created_at.desc())
             .limit(limit)
             .offset(offset)

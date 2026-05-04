@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ARRAY, Enum
+from sqlalchemy import Column, Integer, String, DateTime, ARRAY, Enum, ForeignKey, UniqueConstraint
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -6,11 +6,16 @@ from infrastructure.orm.base import Base
 
 class CustomerORM(Base):
     __tablename__ = "customers"
+    __table_args__ = (
+        UniqueConstraint("client_id", "email", name="uq_customers_client_email"),
+        UniqueConstraint("client_id", "phone", name="uq_customers_client_phone"),
+    )
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    client_id = Column(Integer, ForeignKey("client.id"), nullable=False, index=True)
     name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=True)
-    phone = Column(String, unique=True, index=True, nullable=True)
+    email = Column(String, index=True, nullable=True)
+    phone = Column(String, index=True, nullable=True)
     origin = Column(
         Enum(
             "whatsapp",
@@ -29,5 +34,6 @@ class CustomerORM(Base):
     tags = Column(ARRAY(String), nullable=True, default=list)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    client = relationship("ClientORM", back_populates="customers")
     messages = relationship("MessageORM", back_populates="customers")
     conversations = relationship("ConversationORM", back_populates="customer")

@@ -9,6 +9,7 @@ from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Conversation:
+    client_id: int
     customer_id: int
     bot_user_id: int
     source: MessageSource
