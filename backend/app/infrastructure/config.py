@@ -7,9 +7,14 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
 
     OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-4.1-mini"
     OPENAI_TIMEOUT: int = 20
     OPENAI_MAX_RETRIES: int = 3
     OPENAI_RETRY_BACKOFF: float = 1.5
+    OPENAI_SYSTEM_PROMPT: str = (
+        "You are a helpful customer support assistant. "
+        "Be concise, polite and professional."
+    )
 
     SECRET_KEY: str = ""
     ACCESS_TOKEN_ALGORITHM: str = "HS256"

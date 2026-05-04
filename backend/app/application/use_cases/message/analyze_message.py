@@ -9,6 +9,7 @@ from domain.entities.message import Message
 from domain.enums.message_direction import MessageDirection
 from domain.enums.message_status import MessageStatus
 from domain.interfaces.message_repository import IMessageRepository
+from domain.interfaces.conversation_repository import IConversationRepository
 
 from application.dtos.conversation.create_conversation_command import CreateConversationCommand
 from application.dtos.conversation.escalate_conversation_command import EscalateConversationCommand
@@ -26,6 +27,7 @@ class AnalyzeMessage:
         self,
         message_repo: IMessageRepository,
         ai_gateway: IAIResponderGateway,
+        conversation_repo: IConversationRepository,
         queue_outbound: QueueOutboundMessage,
         create_conversation: CreateConversation,
         escalate_conversation: EscalateConversation,
@@ -35,6 +37,7 @@ class AnalyzeMessage:
         self._queue_outbound = queue_outbound
         self._create_conversation = create_conversation
         self._escalate_conversation = escalate_conversation
+        self._conversation_repo = conversation_repo
 
     async def execute(self, command: AnalyzeMessageCommand) -> AnalyzeMessageResult:
         inbound = await self._message_repo.get_by_id(command.inbound_message_id)
@@ -45,13 +48,17 @@ class AnalyzeMessage:
         
         inbound_text = inbound.content.value if inbound.content else ""
 
-        conversation = await self._create_conversation.execute(
-            CreateConversationCommand(
-                customer_id=inbound.customer_id,
-                bot_user_id=inbound.user_id,
-                source=inbound.source,
-            )
+        conversation = await self._conversation_repo.get_active_by_customer(
+            inbound.customer_id
         )
+        if conversation is None:
+            conversation = await self._create_conversation.execute(
+                CreateConversationCommand(
+                    customer_id=inbound.customer_id,
+                    bot_user_id=inbound.user_id,
+                    source=inbound.source,
+                )
+            )
 
         if self._customer_requested_human(inbound_text):
             await self._escalate(
@@ -93,7 +100,7 @@ class AnalyzeMessage:
                 conversation=conversation,
             )
         
-        outbound = await self.queue_outbound.execute(
+        outbound = await self._queue_outbound.execute(
             QueueOutboundMessageCommand(
                 customer_id=inbound.customer_id,
                 user_id=inbound.user_id,
@@ -117,8 +124,8 @@ class AnalyzeMessage:
         reason: str,
     ) -> None:
         inbound.status = MessageStatus.ESCALATED
-        await self.message_repo.update(inbound)
-        await self.escalate_conversation.execute(
+        await self._message_repo.update(inbound)
+        await self._escalate_conversation.execute(
             EscalateConversationCommand(
                 conversation_id=conversation_id,
                 reason=reason
