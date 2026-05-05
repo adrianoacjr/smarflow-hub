@@ -69,7 +69,7 @@ class UserRepositoryPostgres(IUserRepository):
                 UserORM.id == user_id,
             )
         )
-        orm = await self.scalar_one_or_none()
+        orm = result.scalar_one_or_none()
         if orm is None:
             return False
         await self.session.delete(orm)

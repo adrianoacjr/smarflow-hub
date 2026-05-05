@@ -16,15 +16,15 @@ class ICustomerRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_by_id(self, customer_id: int) -> Optional[Customer]:
+    async def get_by_id(self, client_id: int, customer_id: int) -> Optional[Customer]:
         raise NotImplementedError
 
     @abstractmethod
-    async def get_by_email(self, email: EmailAddress) -> Optional[Customer]:
+    async def get_by_email(self, client_id: int, email: EmailAddress) -> Optional[Customer]:
         raise NotImplementedError
 
     @abstractmethod
-    async def get_by_phone(self, phone: PhoneNumber) -> Optional[Customer]:
+    async def get_by_phone(self, client_id: int, phone: PhoneNumber) -> Optional[Customer]:
         raise NotImplementedError
 
     @abstractmethod
@@ -36,14 +36,13 @@ class ICustomerRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def list(self, limit: int = 50, offset: int = 0) -> list[Customer]:
+    async def list(self, client_id: int, limit: int = 50, offset: int = 0) -> list[Customer]:
         raise NotImplementedError
     
     @abstractmethod
-    async def count(self) -> int:
+    async def count(self, client_id: int) -> int:
         raise NotImplementedError
     
     @abstractmethod
-    async def delete(self, customer_id: int) -> bool:
+    async def delete(self, client_id: int, customer_id: int) -> bool:
         raise NotImplementedError
-    

@@ -16,12 +16,13 @@ class IConversationRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def get_by_id(self, conversation_id: UUID) -> Optional[Conversation]:
+    async def get_by_id(self, client_id: int, conversation_id: UUID) -> Optional[Conversation]:
         raise NotImplementedError
     
     @abstractmethod
     async def get_active_by_customer(
         self,
+        client_id: int,
         customer_id: int,
         source: MessageSource,
     ) -> Optional[Conversation]:
@@ -30,6 +31,7 @@ class IConversationRepository(ABC):
     @abstractmethod
     async def list_by_status(
         self,
+        client_id: int,
         status: ConversationStatus,
         limit: int = 50,
         offset: int = 0,
@@ -37,13 +39,23 @@ class IConversationRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def count_by_status(self, status: ConversationStatus) -> int:
+    async def count_by_status(self, client_id: int, status: ConversationStatus) -> int:
         raise NotImplementedError
     
     @abstractmethod
     async def list_by_customer(
         self,
+        client_id: int,
         customer_id: int,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> list[Conversation]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def list(
+        self,
+        client_id: int,
         limit: int = 50,
         offset: int = 0,
     ) -> list[Conversation]:

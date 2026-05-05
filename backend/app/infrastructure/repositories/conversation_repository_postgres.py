@@ -45,6 +45,7 @@ class ConversationRepositoryPostgres(IConversationRepository):
 
     async def get_active_by_customer(
         self,
+        client_id: int,
         customer_id: int,
         source: MessageSource,
     ) -> Conversation | None:
@@ -56,6 +57,7 @@ class ConversationRepositoryPostgres(IConversationRepository):
         result = await self.session.execute(
             select(ConversationORM)
             .where(
+                ConversationORM.client_id == client_id,
                 ConversationORM.customer_id == customer_id,
                 ConversationORM.source == source.value,
                 ConversationORM.status.in_(active_statuses),
@@ -67,31 +69,49 @@ class ConversationRepositoryPostgres(IConversationRepository):
 
     async def list_by_status(
         self,
+        client_id: int,
         status: ConversationStatus,
         limit: int = 50,
         offset: int = 0,
     ) -> list[Conversation]:
         result = await self.session.execute(
             select(ConversationORM)
-            .where(ConversationORM.status == status.value)
+            .where(
+                ConversationORM.client_id == client_id,
+                ConversationORM.status == status.value,
+            )
             .order_by(ConversationORM.created_at.desc())
             .limit(limit)
             .offset(offset)
         )
         return [ConversationMapper.orm_to_domain(o) for o in result.scalars().all()]
 
-    async def count_by_status(self, status: ConversationStatus) -> int:
+    async def count_by_status(self, client_id: int, status: ConversationStatus) -> int:
         result = await self.session.execute(
-            select(func.count()).where(ConversationORM.status == status.value)
+            select(func.count())
+            .where(
+                ConversationORM.client_id == client_id,
+                ConversationORM.status == status.value,
+            )
         )
         return result.scalar_one()
 
-    async def list_by_customer(self, client_id: int, customer_id: int) -> list[Conversation]:
+    async def list_by_customer(
+        self,
+        client_id: int,
+        customer_id: int,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> list[Conversation]:
         result = await self.session.execute(
-            select(ConversationORM).where(
+            select(ConversationORM)
+            .where(
                 ConversationORM.client_id == client_id,
                 ConversationORM.customer_id == customer_id,
             )
+            .order_by(ConversationORM.created_at.desc())
+            .limit(limit)
+            .offset(offset)
         )
         return [ConversationMapper.orm_to_domain(o) for o in result.scalars().all()]
     

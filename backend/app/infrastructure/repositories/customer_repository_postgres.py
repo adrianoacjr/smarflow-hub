@@ -89,13 +89,23 @@ class CustomerRepositoryPostgres(ICustomerRepository):
         )
         return [CustomerMapper.orm_to_domain(o) for o in result.scalars().all()]
     
-    async def count(self) -> int:
-        result = await self.session.execute(select(func.count(CustomerORM.id)))
+    async def count(self, client_id: int) -> int:
+        result = await self.session.execute(
+            select(func.count(CustomerORM.id))
+            .where(CustomerORM.client_id == client_id)
+        )
         return result.scalar_one()
-
     
-    async def delete(self, customer_id: int) -> bool:
-        orm = await self.session.get(CustomerORM, customer_id)
+    async def delete(self, client_id: int, customer_id: int) -> bool:
+        result = await self.session.execute(
+            select(CustomerORM).where(
+                select(CustomerORM).where(
+                    CustomerORM.client_id == client_id,
+                    CustomerORM.id == customer_id,
+                )
+            )
+        )
+        orm = result.scalar_one_or_none()
         if orm is None:
             return False
         await self.session.delete(orm)
