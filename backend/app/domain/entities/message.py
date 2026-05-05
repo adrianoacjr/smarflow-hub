@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from domain.enums.message_direction import MessageDirection
 from domain.enums.message_source import MessageSource
@@ -16,17 +16,17 @@ class MessageAttachment:
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Message:
-    id: UUID
     customer_id: int
-    user_id: int
-    content: MessageContent | None
     direction: MessageDirection
     source: MessageSource
     created_at: datetime
     automated: bool
     status: MessageStatus
-    attachments: tuple[MessageAttachment, ...] = field(default_factory=tuple)
+    content: MessageContent | None = None
+    user_id: Optional[int] = None
     conversation_id: Optional[UUID] = None
+    attachments: tuple[MessageAttachment, ...] = field(default_factory=tuple)
+    id: Optional[UUID] = field(default_factory=uuid4)
 
     def __post_init__(self) -> None:
         if self.content is None and not self.attachments:

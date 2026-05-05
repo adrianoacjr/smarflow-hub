@@ -6,7 +6,7 @@ from domain.enums.client_plan import ClientPlan
 from domain.value_objects.email_address import EmailAddress
 from domain.utils.time import utcnow
 
-@dataclass(eq=False, losts=True, kw_only=True)
+@dataclass(eq=False, slots=True, kw_only=True)
 class Client:
     name: str
     email: EmailAddress

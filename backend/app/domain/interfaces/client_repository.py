@@ -14,7 +14,7 @@ class IClientRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def get_by_id(self, client: int) -> Optional[Client]:
+    async def get_by_id(self, client_id: int) -> Optional[Client]:
         raise NotImplementedError
     
     @abstractmethod
@@ -34,5 +34,5 @@ class IClientRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def delete(self, client_if: int) -> bool:
+    async def delete(self, client_id: int) -> bool:
         raise NotImplementedError
