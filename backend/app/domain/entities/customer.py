@@ -10,7 +10,7 @@ from domain.value_objects.phone_number import PhoneNumber
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Customer:
-    client_int: int
+    client_id: int
     name: str
     origin: CustomerOrigin
     created_at: datetime

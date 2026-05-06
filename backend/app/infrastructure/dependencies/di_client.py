@@ -23,7 +23,7 @@ def get_get_client(session: AsyncSession) -> GetClient:
 def get_get_all_clients(session: AsyncSession) -> GetAllClients:
     return GetAllClients(repo=get_client_repository(session))
 
-def get_udpate_client(session: AsyncSession) -> UpdateClient:
+def get_update_client(session: AsyncSession) -> UpdateClient:
     return UpdateClient(repo=get_client_repository(session))
 
 def get_change_client_plan(session: AsyncSession) -> ChangeClientPlan:

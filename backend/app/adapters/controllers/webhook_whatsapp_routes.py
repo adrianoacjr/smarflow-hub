@@ -1,32 +1,30 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from adapters.dtos.whatsapp_webhook_dto import WhatsAppWebhookDTO
-from application.use_cases.integration.receive_whatsapp_message import ReceiveWhatsAppMessage
-from application.use_cases.integration.process_ai_reply import ProcessAIReply
+from infrastructure.database import get_session
+from infrastructure.dependencies.di_message import get_received_message
+from infrastructure.dependencies.di_ai import get_analyze_message
 
-def build_webhook_whatsapp_router(
-    receive_whatsapp_message: ReceiveWhatsAppMessage,
-    process_ai_reply: ProcessAIReply,
-) -> APIRouter:
-    router = APIRouter()
+router = APIRouter(prefix="/webhooks", tags=["Webhooks"])
 
-    @router.get("/whatsapp-webhook", status_code=status.HTTP_200_OK)
-    async def whatsapp_webhook_health():
-        return {"status": "ok"}
+@router.get("/whatsapp-webhook", status_code=status.HTTP_200_OK)
+async def health():
+    return {"status": "ok"}
 
-    @router.post("/whatsapp-webhook", status_code=status.HTTP_200_OK)
-    async def whatsapp_webhook(payload: WhatsAppWebhookDTO):
-        await receive_whatsapp_message.execute(
-            user_id=1,
-            customer_id=1,
-            content=payload.content
-        )
+@router.get("/whatsapp-webhook", status_code=status.HTTP_200_OK)
+async def receive_whatsapp(
+    payload: WhatsAppWebhookDTO,
+    session: AsyncSession = Depends(get_session),
+):
+    message = await get_received_message(session).execute(
+        phone=payload.phone,
+        content=payload.content,
+    )
 
-        ai_response = await process_ai_reply.execute(
-            customer_id=1,
-            inbound_content=payload.content,
-        )
+    reply = await get_analyze_message(session).execute(
+        customer_id=message.customer_id,
+        inbound_content=payload.content,
+    )
 
-        return {"status": "received", "reply": ai_response.content}
-
-    return router
+    return {"status": "received", "reply": reply.content}

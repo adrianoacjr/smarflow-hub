@@ -1,41 +1,68 @@
-from typing import List
-
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from adapters.dtos.message_dto import MessageCreateDTO, MessageResponseDTO
-from application.use_cases.message.create_message import CreateMessage
-from application.use_cases.message.get_message_by_id import GetMessageById
-from application.use_cases.message.list_message_by_user import ListMessageByUser
-from application.use_cases.message.list_message_by_customer import ListMessageByCustomer
-from application.use_cases.message.delete_message import DeleteMessage
+from infrastructure.database import get_session
+from infrastructure.dependencies.di_message import (
+    get_create_message,
+    get_get_message_by_id,
+    get_list_messages_by_user,
+    get_list_messages_by_customer,
+    get_delete_message,
+)
 
-def build_message_router(
-    create_message: CreateMessage,
-    get_message_by_id: GetMessageById,
-    list_message_by_user: ListMessageByUser,
-    list_message_by_customer: ListMessageByCustomer,
-    delete_message: DeleteMessage,
-) -> APIRouter:
-    router = APIRouter()
+router = APIRouter(prefix="/messages", tags=["Messages"])
 
-    @router.post("/messages/", response_model=MessageResponseDTO)
-    async def create(message_input: MessageCreateDTO):
-        pass
+@router.post("/", response_model=MessageResponseDTO, status_code=201)
+async def create(
+    body: MessageCreateDTO,
+    session: AsyncSession = Depends(get_session),
+):
+    use_case = get_create_message(session)
+    msg = await use_case.execute(
+        user_id=body.user_id,
+        customer_id=body.customer_id,
+        content=body.content,
+        direction=body.direction,
+        source=body.direction,
+        automated=body.automated,
+        status=body.status,
+    )
+    return MessageResponseDTO.from_domain(msg)
 
-    @router.get("/messages/{message_id}", response_model=MessageResponseDTO)
-    async def get_by_id(message_id: int):
-        pass
+@router.get("/{message_id}", response_model=MessageResponseDTO)
+async def get_by_id(
+    message_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    use_case = get_get_message_by_id(session)
+    msg = await use_case.execute(message_id)
+    if not msg:
+        raise HTTPException(status_code=404, detail="Message not found")
+    return MessageResponseDTO.from_domain(msg)
 
-    @router.get("/users/{user_id}", response_model=List[MessageResponseDTO])
-    async def list_by_user(user_id: int):
-        pass
+@router.get("/by-user/{user_id}", response_model=list[MessageResponseDTO])
+async def list_by_user(
+    user_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    use_case = get_list_messages_by_user(session)
+    msgs = await use_case.execute(user_id)
+    return [MessageResponseDTO.from_domain(m) for m in msgs]
 
-    @router.get("/users/{customer_id}", response_model=List[MessageResponseDTO])
-    async def list_by_customer(customer_id: int):
-        pass
+@router.get("/by-customer/{customer_id}", response_model=list[MessageResponseDTO])
+async def list_by_customer(
+    customer_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    use_case = get_list_messages_by_customer(session)
+    msgs = await use_case.execute(customer_id)
+    return [MessageResponseDTO.from_domain(m) for m in msgs]
 
-    @router.get("/users/{user_id}", status_code=204)
-    async def delete(user_id: int):
-        pass
-
-    return router
+@router.delete("/{message_id}", status_code=204)
+async def delete(
+    message_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    use_case = get_delete_emssage(session)
+    await use_case.execute(message_id)
