@@ -10,6 +10,7 @@ class ConversationMapper:
     def orm_to_domain(orm: ConversationORM) -> Conversation:
         return Conversation(
             id=orm.id,
+            client_id=orm.client_id,
             customer_id=orm.customer_id,
             bot_user_id=orm.bot_user_id,
             assigned_agent_id=orm.assigned_agent_id,
@@ -24,6 +25,7 @@ class ConversationMapper:
     def domain_to_orm(domain: Conversation) -> ConversationORM:
         return ConversationORM(
             id=domain.id,
+            client_id=domain.client_id,
             customer_id=domain.customer_id,
             bot_user_id=domain.bot_user_id,
             assigned_agent_id=domain.assigned_agent_id,

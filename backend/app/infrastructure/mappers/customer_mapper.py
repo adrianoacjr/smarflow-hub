@@ -11,6 +11,7 @@ class CustomerMapper:
     def orm_to_domain(orm: CustomerORM) -> Customer:
         return Customer(
             id=orm.id,
+            client_id=orm.client_id,
             name=orm.name, 
             email=EmailAddress(orm.email) if orm.email else None,
             phone=PhoneNumber(orm.phone) if orm.phone else None,
@@ -25,6 +26,7 @@ class CustomerMapper:
     def domain_to_orm(domain: Customer) -> CustomerORM:
         return CustomerORM(
             id=domain.id,
+            client_id=domain.client_id,
             name=domain.name,
             email=domain.email.value if domain.email else None,
             phone=domain.phone.value if domain.phone else None,

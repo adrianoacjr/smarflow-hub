@@ -9,6 +9,7 @@ class UserMapper:
     def orm_to_domain(orm: UserORM) -> User:
         return User(
             id=orm.id,
+            client_id=orm.client_id,
             name=orm.name,
             email=EmailAddress(orm.email),
             password_hash=orm.password_hash,
@@ -22,6 +23,7 @@ class UserMapper:
     def domain_to_orm(domain: User) -> UserORM:
         return UserORM(
             id=domain.id,
+            client_id=domain.client_id,
             name=domain.name,
             email=domain.email.value,
             password_hash=domain.password_hash,
