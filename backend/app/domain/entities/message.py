@@ -25,7 +25,7 @@ class Message:
     content: MessageContent | None = None
     user_id: Optional[int] = None
     conversation_id: Optional[UUID] = None
-    attachments: tuple[MessageAttachment, ...] = field(default_factory=tuple)
+    attachments: list[MessageAttachment] = field(default_factory=list)
     id: Optional[UUID] = field(default_factory=uuid4)
 
     def __post_init__(self) -> None:
@@ -60,7 +60,7 @@ class Message:
 
         allowed = valid_transitions.get(self.status, set())
         if new_status not in allowed:
-            raise ValueError(f"Invalid status transition: {self.status}) -> {new_status}")
+            raise ValueError(f"Invalid status transition: {self.status} -> {new_status}")
         
         self.status = new_status
 

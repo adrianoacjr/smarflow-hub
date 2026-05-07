@@ -5,6 +5,7 @@ from domain.enums.user_type import UserType
 
 @dataclass(frozen=True, slots=True)
 class CreateUserCommand:
+    client_id: int
     name: str
     email: str
     password: str

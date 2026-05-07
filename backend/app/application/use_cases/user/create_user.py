@@ -29,6 +29,7 @@ class CreateUser:
         password_hash = self.password_hasher.hash(command.password)
 
         new_user = User(
+            client_id = command.client_id,
             name = command.name.strip(),
             email = email,
             password_hash = password_hash,

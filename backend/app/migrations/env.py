@@ -1,4 +1,6 @@
 import asyncio
+import selectors
+import sys
 from logging.config import fileConfig
 
 from sqlalchemy import pool
@@ -8,6 +10,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 
 from infrastructure.orm.base import Base
+from infrastructure.orm.client_orm import ClientORM
 from infrastructure.orm.user_orm import UserORM
 from infrastructure.orm.customer_orm import CustomerORM
 from infrastructure.orm.conversation_orm import ConversationORM
@@ -54,7 +57,11 @@ async def run_async_migrations() -> None:
     await engine.dispose()
 
 def run_migrations_online() -> None:
-    asyncio.run(run_async_migrations())
+    if sys.platform == "win32":
+        loop_factory = lambda: asyncio.SelectorEventLoop(selectors.SelectSelector())
+        asyncio.run(run_async_migrations(), loop_factory=loop_factory)
+    else:
+        asyncio.run(run_async_migrations())
 
 if context.is_offline_mode():
     run_migrations_offline()
