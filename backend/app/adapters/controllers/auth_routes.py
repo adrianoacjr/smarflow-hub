@@ -7,7 +7,7 @@ from adapters.dtos.auth_dto import LoginDTO, TokenResponseDTO
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-@router.post("/login", reponse_model=TokenResponseDTO)
+@router.post("/login", response_model=TokenResponseDTO)
 async def login(
     data: LoginDTO,
     session: AsyncSession = Depends(get_session),
@@ -17,6 +17,6 @@ async def login(
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or pasword",
+            detail="Invalid username or password",
         )
     return TokenResponseDTO(access_token=token)
