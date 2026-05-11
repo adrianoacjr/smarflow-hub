@@ -8,6 +8,7 @@ from application.interfaces.ai_responder_gateway import IAIResponderGateway
 from application.use_cases.message.analyze_message import AnalyzeMessage
 from infrastructure.config import settings
 from infrastructure.dependencies.di_conversation import (
+    get_conversation_repository,
     get_create_conversation,
     get_escalate_conversation,
 )
@@ -24,7 +25,7 @@ def get_openai_client() -> AsyncOpenAI:
 
 def get_ai_gateway() -> IAIResponderGateway:
     return AIResponderGatewayOpenai(
-        client=OpenAIClientFactory.create(),
+        client=get_openai_client(),
         model=settings.OPENAI_MODEL,
         system_prompt=settings.OPENAI_SYSTEM_PROMPT,
     )
@@ -33,6 +34,7 @@ def get_analyze_message(session: AsyncSession) -> AnalyzeMessage:
     return AnalyzeMessage(
         message_repo=get_message_repository(session),
         ai_gateway=get_ai_gateway(),
+        conversation_repo=get_conversation_repository(session),
         queue_outbound=get_queue_outbound_message(session),
         create_conversation=get_create_conversation(session),
         escalate_conversation=get_escalate_conversation(session),

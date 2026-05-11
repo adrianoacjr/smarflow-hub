@@ -22,6 +22,7 @@ class Settings(BaseSettings):
 
     WHATSAPP_TOKEN: str = ""
     WHATSAPP_PHONE_NUMBER_ID: str = ""
+    WHATSAPP_VERIFY_TOKEN: str = "meu_token_secreto"
 
     model_config = SettingsConfigDict(
         env_file=".env",

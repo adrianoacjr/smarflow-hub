@@ -40,7 +40,7 @@ class AIResponderGatewayOpenai(IAIResponderGateway):
     
     def _with_system_prompt(
         self,
-        messages: List[dict[str, str]],
+        messages: list[dict[str, str]],
     ) -> list[dict[str, str]]:
         if messages and messages[0].get("role") == "system":
             return messages
