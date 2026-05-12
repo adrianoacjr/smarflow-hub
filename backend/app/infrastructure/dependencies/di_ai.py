@@ -17,6 +17,7 @@ from infrastructure.dependencies.di_message import (
     get_queue_outbound_message,
     get_dispatch_outbound_message,
 )
+from infrastructure.dependencies.di_user import get_user_repository
 from infrastructure.gateways.ai_responder_gateway_openai import AIResponderGatewayOpenai
 from infrastructure.gateways.openai_client import OpenAIClientFactory
 
@@ -40,4 +41,6 @@ def get_analyze_message(session: AsyncSession) -> AnalyzeMessage:
         create_conversation=get_create_conversation(session),
         escalate_conversation=get_escalate_conversation(session),
         dispatch_outboud=get_dispatch_outbound_message(session),
+        user_repo=get_user_repository(session),
+        default_system_prompt=settings.OPENAI_SYSTEM_PROMPT,
     )

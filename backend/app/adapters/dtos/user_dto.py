@@ -11,6 +11,7 @@ class UserCreateDTO(BaseModel):
     password: str = Field(..., min_length=1)
     access_level: str = Field(..., pattern="^(admin|user|guest)$")
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
+    system_prompt: Optional[str] = None
 
 class UserResponseDTO(BaseModel):
     id: int
@@ -19,6 +20,7 @@ class UserResponseDTO(BaseModel):
     access_level: str
     created_at: datetime
     active: bool
+    system_prompt: Optional[str] = None
 
     @staticmethod
     def from_domain(user: User):
@@ -28,5 +30,6 @@ class UserResponseDTO(BaseModel):
             email=user.email,
             access_level=user.access_level,
             created_at=user.created_at,
-            active=user.active
+            active=user.active,
+            system_prompt=user.system_prompt
         )

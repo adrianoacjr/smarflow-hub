@@ -17,6 +17,7 @@ class UserMapper:
             user_type=UserType(orm.user_type),
             created_at=orm.created_at,
             active=orm.active,
+            system_prompt=orm.system_prompt,
         )
     
     @staticmethod
@@ -31,5 +32,6 @@ class UserMapper:
             user_type=domain.user_type.value,
             created_at=domain.created_at,
             active=domain.active,
+            system_prompt=domain.system_prompt,
         )
 

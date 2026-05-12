@@ -10,6 +10,7 @@ from domain.enums.message_direction import MessageDirection
 from domain.enums.message_status import MessageStatus
 from domain.interfaces.message_repository import IMessageRepository
 from domain.interfaces.conversation_repository import IConversationRepository
+from domain.interfaces.user_repository import IUserRepository
 
 from application.dtos.conversation.create_conversation_command import CreateConversationCommand
 from application.dtos.conversation.escalate_conversation_command import EscalateConversationCommand
@@ -29,10 +30,12 @@ class AnalyzeMessage:
         message_repo: IMessageRepository,
         ai_gateway: IAIResponderGateway,
         conversation_repo: IConversationRepository,
+        user_repo: IUserRepository,
         queue_outbound: QueueOutboundMessage,
         create_conversation: CreateConversation,
         escalate_conversation: EscalateConversation,
         dispatch_outboud: DispatchOutboundMessage,
+        default_system_prompt: str,
     ) -> None:
         self._message_repo = message_repo
         self._ai_gateway = ai_gateway
@@ -41,6 +44,8 @@ class AnalyzeMessage:
         self._escalate_conversation = escalate_conversation
         self._conversation_repo = conversation_repo
         self._dispatch_outbound = dispatch_outboud
+        self._user_repo = user_repo
+        self._default_system_prompt = default_system_prompt
 
     async def execute(self, command: AnalyzeMessageCommand) -> AnalyzeMessageResult:
         inbound = await self._message_repo.get_by_id(command.inbound_message_id)
@@ -88,8 +93,19 @@ class AnalyzeMessage:
             offset=0,
             order_by_created_asc=True,
         )
+
+        bot_user = await self._user_repo.get_by_id(inbound.user_id)
+        effective_prompt = (
+            bot_user.system_prompt
+            if bot_user and bot_user.is_bot and bot_user.system_prompt
+            else self._default_system_prompt
+        )
+        
         conversation_context = self._build_context(history, inbound)
-        ai_response = await self._ai_gateway.generate_response(conversation_context)
+        ai_response = await self._ai_gateway.generate_response(
+            message=conversation_context,
+            system_prompt_override=effective_prompt,
+        )
 
         if ai_response.confidence < AI_CONFIDENCE_THRESHOLD:
             await self._escalate(

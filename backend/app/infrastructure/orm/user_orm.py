@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -28,6 +28,7 @@ class UserORM(Base):
     )
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     active = Column(Boolean, nullable=False, default=True)
+    system_prompt = Column(Text, nullable=True)
 
     client = relationship("ClientORM", back_populates="users")
     messages = relationship(

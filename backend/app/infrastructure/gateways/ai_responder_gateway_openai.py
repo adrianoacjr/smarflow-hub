@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI, APITimeoutError, APIStatusError
+from typing import Optional
 
 from application.interfaces.ai_responder_gateway import AIResponse, IAIResponderGateway
 
@@ -19,8 +20,10 @@ class AIResponderGatewayOpenai(IAIResponderGateway):
     async def generate_response(
         self,
         message: list[dict[str, str]],
+        system_prompt_override: Optional[str] = None,
     ) -> AIResponse:
-        messages = self._with_system_prompt(message)
+        prompt = system_prompt_override or self._system_prompt
+        messages = self._with_system_prompt(message, prompt)
 
         try:
             response = await self._client.chat.completions.create(
@@ -41,7 +44,8 @@ class AIResponderGatewayOpenai(IAIResponderGateway):
     def _with_system_prompt(
         self,
         messages: list[dict[str, str]],
+        prompt: str,
     ) -> list[dict[str, str]]:
         if messages and messages[0].get("role") == "system":
             return messages
-        return [{"role": "system", "content": self._system_prompt}, *messages]
+        return [{"role": "system", "content": prompt}, *messages]

@@ -16,6 +16,7 @@ class User:
     user_type: UserType
     created_at: datetime
     active: bool = True
+    system_prompt: Optional[str] = None
     id: Optional[int] = None
 
     @property
