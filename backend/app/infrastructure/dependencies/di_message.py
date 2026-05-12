@@ -7,6 +7,7 @@ from application.use_cases.message.list_message_by_customer import ListMessageBy
 from application.use_cases.message.list_message_by_user import ListMessageByUser
 from application.use_cases.message.queue_outbound_message import QueueOutboundMessage
 from application.use_cases.message.receive_message import ReceiveMessage
+from application.use_cases.message.dispatch_outbound_message import DispatchOutboundMessage
 from infrastructure.repositories.message_repository_postgres import MessageRepositoryPostgres
 from infrastructure.dependencies.di_customer import (
     get_customer_repository,
@@ -17,6 +18,7 @@ from infrastructure.dependencies.di_conversation import (
     get_create_conversation,
     get_escalate_conversation,
 )
+from infrastructure.dependencies.di_gateway import get_whatsapp_gateway
 
 def get_message_repository(session: AsyncSession) -> MessageRepositoryPostgres:
     return MessageRepositoryPostgres(session)
@@ -57,6 +59,13 @@ def get_received_message(session: AsyncSession) -> ReceiveMessage:
         message_repo=get_message_repository(session),
         user_repo=get_user_repository(session),
         get_or_create_customer=get_get_or_create_customer(session),
+    )
+
+def get_dispatch_outbound_message(session: AsyncSession) -> DispatchOutboundMessage:
+    return DispatchOutboundMessage(
+        message_repo=get_message_repository(session),
+        customer_repo=get_customer_repository(session),
+        message_gateway=get_whatsapp_gateway(),
     )
 
 def get_delete_message(session: AsyncSession) -> DeleteMessage:

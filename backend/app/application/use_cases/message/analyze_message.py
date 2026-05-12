@@ -21,6 +21,7 @@ from application.interfaces.ai_responder_gateway import IAIResponderGateway
 from application.use_cases.conversation.create_conversation import CreateConversation
 from application.use_cases.conversation.escalate_conversation import EscalateConversation
 from application.use_cases.message.queue_outbound_message import QueueOutboundMessage
+from application.use_cases.message.dispatch_outbound_message import DispatchOutboundMessage
 
 class AnalyzeMessage:
     def __init__(
@@ -31,6 +32,7 @@ class AnalyzeMessage:
         queue_outbound: QueueOutboundMessage,
         create_conversation: CreateConversation,
         escalate_conversation: EscalateConversation,
+        dispatch_outboud: DispatchOutboundMessage,
     ) -> None:
         self._message_repo = message_repo
         self._ai_gateway = ai_gateway
@@ -38,6 +40,7 @@ class AnalyzeMessage:
         self._create_conversation = create_conversation
         self._escalate_conversation = escalate_conversation
         self._conversation_repo = conversation_repo
+        self._dispatch_outbound = dispatch_outboud
 
     async def execute(self, command: AnalyzeMessageCommand) -> AnalyzeMessageResult:
         inbound = await self._message_repo.get_by_id(command.inbound_message_id)
@@ -109,6 +112,7 @@ class AnalyzeMessage:
                 automated=True,
             )
         )
+        await self._dispatch_outbound.execute(outbound)
 
         return AnalyzeMessageResult(
             outcome=AnalysisOutcome.AI_REPLIED,

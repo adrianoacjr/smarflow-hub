@@ -15,6 +15,7 @@ from infrastructure.dependencies.di_conversation import (
 from infrastructure.dependencies.di_message import (
     get_message_repository,
     get_queue_outbound_message,
+    get_dispatch_outbound_message,
 )
 from infrastructure.gateways.ai_responder_gateway_openai import AIResponderGatewayOpenai
 from infrastructure.gateways.openai_client import OpenAIClientFactory
@@ -38,4 +39,5 @@ def get_analyze_message(session: AsyncSession) -> AnalyzeMessage:
         queue_outbound=get_queue_outbound_message(session),
         create_conversation=get_create_conversation(session),
         escalate_conversation=get_escalate_conversation(session),
+        dispatch_outboud=get_dispatch_outbound_message(session),
     )
