@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
 
-    OPENAI_API_KEY: str = ""
+    OPENAI_API_KEY: str
     OPENAI_MODEL: str = "gpt-4.1-mini"
     OPENAI_TIMEOUT: int = 20
     OPENAI_MAX_RETRIES: int = 3
