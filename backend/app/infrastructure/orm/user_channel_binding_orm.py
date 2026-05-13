@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from infrastructure.orm.base import Base
 
-class UserChannelBindingModel(Base):
+class UserChannelBindingORM(Base):
     __tablename__ = "user_channel_bindings"
     __table_args__ = (
         UniqueConstraint("source", "external_ref", name="uq_channel_bindings_source_ref"),

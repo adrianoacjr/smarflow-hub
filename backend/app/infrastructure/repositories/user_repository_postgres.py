@@ -8,6 +8,7 @@ from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.email_address import EmailAddress
 from infrastructure.mappers.user_mapper import UserMapper
 from infrastructure.orm.user_orm import UserORM
+from infrastructure.orm.user_channel_binding_orm import UserChannelBindingORM
 
 
 class UserRepositoryPostgres(IUserRepository):
@@ -61,6 +62,18 @@ class UserRepositoryPostgres(IUserRepository):
             .offset(offset)
         )
         return [UserMapper.orm_to_domain(o) for o in result.scalars().all()]
+    
+    async def get_by_channel(self, source: str, external_ref: str) -> Optional[User]:
+        result = await self.session.execute(
+            select(UserORM)
+            .join(UserChannelBindingORM, UserChannelBindingORM.user_id == UserORM.id)
+            .where(
+                UserChannelBindingORM.source == source,
+                UserChannelBindingORM.external_ref == external_ref,
+            )
+        )
+        orm = result.scalar_one_or_none()
+        return UserMapper.orm_to_domain(orm) if orm else None
 
     async def delete(self, client_id: int, user_id: int) -> bool:
         result = await self.session.execute(

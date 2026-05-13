@@ -26,7 +26,7 @@ class IUserRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def get_by_channel(self, seource: str, external_ref: str) -> Optional[User]:
+    async def get_by_channel(self, source: str, external_ref: str) -> Optional[User]:
         ...
 
     @abstractmethod

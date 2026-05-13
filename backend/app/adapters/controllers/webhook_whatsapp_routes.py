@@ -8,6 +8,7 @@ from infrastructure.config import settings
 from infrastructure.database import get_session
 from infrastructure.dependencies.di_message import get_received_message
 from infrastructure.dependencies.di_ai import get_analyze_message
+from infrastructure.dependencies.di_user import get_user_repository
 
 router = APIRouter(prefix="/webhooks", tags=["Webhooks"])
 
@@ -26,12 +27,22 @@ async def receive_whatsapp(
     payload: WhatsAppWebhookDTO,
     session: AsyncSession = Depends(get_session),
 ):
+    bot = await get_user_repository(session).get_by_channel(
+        source="whatsapp",
+        external_ref=payload.phone_number_id,
+    )
+    if bot is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No bot configured for phone_number_id '{payload.phone_number_id}'"
+        )
+
     inbound = await get_received_message(session).execute(
         ReceiveMessageCommand(
-            user_id=payload.user_id,
+            user_id=bot.id,
             source=payload.source,
             source_customer_ref=payload.phone,
-            customer_name=payload.customer_name,
+            customer_name=payload.customer_name or "",
             content=payload.content,
             attachments=payload.attachments or [],
             automated=False,

@@ -9,17 +9,7 @@ class WhatsAppAttachmentDTO(BaseModel):
     filename: Optional[str] = None
 
 class WhatsAppWebhookDTO(BaseModel):
-    """
-    Payload enviado pelo Meta via webhook POST.
-
-    user_id: UUID do bot (User) reponsável por este número de WhatsApp.
-    source: canal de origem - sempre 'whatsapp' neste contexto.
-    phone: número do cliente final (source_customer_ref).
-    customer_name: nome do contato do WhtsApp (pode ser vazio).
-    content: texto da mensagem (opcional se vier anexo).
-    attachments: lista de mídia recebida.
-    """
-    user_id: UUID
+    phone_number_id: str
     source: str = "whatsapp"
     phone: str
     customer_name: Optional[str] = None
