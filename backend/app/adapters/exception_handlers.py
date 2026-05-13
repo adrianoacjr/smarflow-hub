@@ -30,7 +30,6 @@ from application.exceptions.conversation_exceptions import (
     ConversationInvalidTransitionError,
     AgentNotAvailableError,
 )
-from application.exceptions.auth_exceptions import *
 
 def register_exception_handlers(app) -> None:
     @app.exception_handler(MessageNotFoundError)
@@ -55,7 +54,7 @@ def register_exception_handlers(app) -> None:
     @app.exception_handler(ClientInactiveError)
     @app.exception_handler(InvalidClientPlanError)
     async def conflict_handler(request: Request, exc: Exception):
-        return JSONResponse(request=409, content={"detail": str(exc)})
+        return JSONResponse(status_code=409, content={"detail": str(exc)})
     
     @app.exception_handler(InvalidCredentialsError)
     @app.exception_handler(InactiveUserError)
