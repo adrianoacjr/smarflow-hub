@@ -44,7 +44,7 @@ class MessageORM(Base):
     automated = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    users = relationship(
+    user = relationship(
         "UserORM",
         back_populates="messages",
         foreign_keys=[user_id],

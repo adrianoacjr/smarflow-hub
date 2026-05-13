@@ -39,7 +39,7 @@ class UserORM(Base):
     )
     messages = relationship(
         "MessageORM",
-        back_populates="users",
+        back_populates="user",
         foreign_keys="[MessageORM.user_id]",
     )
     bot_conversations = relationship(
