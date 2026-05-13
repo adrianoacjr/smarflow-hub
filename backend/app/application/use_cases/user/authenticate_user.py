@@ -20,7 +20,7 @@ class AuthenticateUser:
     async def execute(self, command: AuthenticateUserCommand) -> AuthenticationResult:
         email = EmailAddress(command.email)
 
-        user = await self.repo.get_by_email(email)
+        user = await self.repo.get_by_email_only(email)
         if user is None:
             raise InvalidCredentialsError("Invalid credentials")
         

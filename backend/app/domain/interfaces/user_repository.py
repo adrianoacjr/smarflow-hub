@@ -20,6 +20,10 @@ class IUserRepository(ABC):
     @abstractmethod
     async def get_by_email(self, client_id: int, email: EmailAddress) -> Optional[User]:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def get_by_email(self, email: EmailAddress) -> Optional[User]:
+        raise NotImplementedError
 
     @abstractmethod
     async def list(self, client_id: int, limit: int = 50, offset: int = 0) -> list[User]:

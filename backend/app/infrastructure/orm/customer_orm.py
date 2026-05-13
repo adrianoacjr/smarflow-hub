@@ -36,4 +36,4 @@ class CustomerORM(Base):
 
     client = relationship("ClientORM", back_populates="customers")
     messages = relationship("MessageORM", back_populates="customers")
-    conversations = relationship("ConversationORM", back_populates="customer")
+    conversations = relationship("ConversationORM", back_populates="customers")

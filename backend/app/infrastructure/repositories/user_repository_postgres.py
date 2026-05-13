@@ -52,6 +52,13 @@ class UserRepositoryPostgres(IUserRepository):
         )
         orm = result.scalar_one_or_none()
         return UserMapper.orm_to_domain(orm) if orm else None
+    
+    async def get_by_email_only(self, email: EmailAddress) -> Optional[User]:
+        result = await self.session.execute(
+            select(UserORM).where(UserORM.email == email.value)
+        )
+        orm = result.scalar_one_or_none()
+        return UserMapper.orm_to_domain(orm) if orm else None
 
     async def list(self, client_id: int, limit: int = 50, offset: int = 0) -> list[User]:
         result = await self.session.execute(
