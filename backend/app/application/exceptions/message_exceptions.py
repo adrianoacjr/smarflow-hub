@@ -1,10 +1,7 @@
-class MessageValidationError (Exception):
+class MessageValidationError(Exception):
     pass
 
 class CustomerNotFoundError(Exception):
-    pass
-
-class UserNotFoundError(Exception):
     pass
 
 class MessageNotFoundError(Exception):

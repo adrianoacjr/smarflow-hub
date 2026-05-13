@@ -10,6 +10,7 @@ from adapters.controllers.customer_routes import router as customer_router
 from adapters.controllers.message_routes import router as message_router
 from adapters.controllers.webhook_whatsapp_routes import router as webhook_router
 from adapters.controllers.client_routes import router as client_router
+from adapters.exception_handlers import register_exception_handlers
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,3 +37,4 @@ app.include_router(customer_router)
 app.include_router(message_router)
 app.include_router(webhook_router)
 app.include_router(client_router)
+register_exception_handlers(app)
