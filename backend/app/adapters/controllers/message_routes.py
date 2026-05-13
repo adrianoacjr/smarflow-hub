@@ -64,5 +64,5 @@ async def delete(
     message_id: int,
     session: AsyncSession = Depends(get_session),
 ):
-    use_case = get_delete_emssage(session)
+    use_case = get_delete_message(session)
     await use_case.execute(message_id)
