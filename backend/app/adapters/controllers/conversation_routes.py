@@ -31,7 +31,7 @@ async def list_conversations(
     repo = get_conversation_repository(session)
     conversations = await repo.list(client_id, limit=limit, offset=offset)
     return ConversationListResponseDTO(
-        conversation=[ConversationResponseDTO.model_validate(c) for c in conversations],
+        conversations=[ConversationResponseDTO.model_validate(c) for c in conversations],
         total=len(conversations),
     )
 
@@ -61,7 +61,7 @@ async def list_by_customer(
     repo = get_conversation_repository(session)
     conversations = await repo.list_by_customer(client_id, customer_id, limit=limit, offset=offset)
     return ConversationListResponseDTO(
-        conversations=[ConversationListResponseDTO.model_validate(c) for c in conversations],
+        conversations=[ConversationResponseDTO.model_validate(c) for c in conversations],
         total=len(conversations),
     )
 
@@ -78,7 +78,7 @@ async def get_conversations(
         raise ConversationNotFoundError(f"Conversation '{conversation_id}' not found")
     return ConversationResponseDTO.model_validate(conversation)
 
-@router.post("/{conversation_id}/escalate", reponse_model=ConversationResponseDTO)
+@router.post("/{conversation_id}/escalate", response_model=ConversationResponseDTO)
 async def escalate_conversation(
     conversation_id: UUID,
     body: EscalateConversationRequestDTO,
