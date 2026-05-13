@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     WHATSAPP_PHONE_NUMBER_ID: str = ""
     WHATSAPP_VERIFY_TOKEN: str
 
+    ALLOWED_ORIGINS: list[str] = ["http://localhost", "https://localhost:5173", "http://localhost:8000"]
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
