@@ -21,7 +21,7 @@ class ConversationResponseDTO(BaseModel):
     model_config = {"from_attributes": True}
 
 class ConversationListResponseDTO(BaseModel):
-    conversation: list[ConversationResponseDTO]
+    conversations: list[ConversationResponseDTO]
     total: int
 
 class EscalateConversationRequestDTO(BaseModel):
