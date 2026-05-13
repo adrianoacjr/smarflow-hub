@@ -16,13 +16,13 @@ class Settings(BaseSettings):
         "Be concise, polite and professional."
     )
 
-    SECRET_KEY: str = ""
+    SECRET_KEY: str
     ACCESS_TOKEN_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     WHATSAPP_TOKEN: str = ""
     WHATSAPP_PHONE_NUMBER_ID: str = ""
-    WHATSAPP_VERIFY_TOKEN: str = "meu_token_secreto"
+    WHATSAPP_VERIFY_TOKEN: str
 
     model_config = SettingsConfigDict(
         env_file=".env",
