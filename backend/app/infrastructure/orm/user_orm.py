@@ -31,6 +31,12 @@ class UserORM(Base):
     system_prompt = Column(Text, nullable=True)
 
     client = relationship("ClientORM", back_populates="users")
+    channel_bindings = relationship(
+        "UserChannelBindingORM",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
     messages = relationship(
         "MessageORM",
         back_populates="users",

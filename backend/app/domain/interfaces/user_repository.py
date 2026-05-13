@@ -24,6 +24,10 @@ class IUserRepository(ABC):
     @abstractmethod
     async def list(self, client_id: int, limit: int = 50, offset: int = 0) -> list[User]:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def get_by_channel(self, seource: str, external_ref: str) -> Optional[User]:
+        ...
 
     @abstractmethod
     async def delete(self, client_id: int, user_id: int) -> bool:
