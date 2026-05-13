@@ -8,7 +8,7 @@ from application.exceptions.conversation_exceptions import (
     ConversationInvalidTransitionError,
     AgentNotAvailableError,
 )
-from application.exceptions.message_exceptions import UserNotFoundError
+from application.exceptions.user_exceptions import UserNotFoundError
 
 class AssignAgent:
     def __init__(

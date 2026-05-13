@@ -2,7 +2,7 @@ from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.email_address import EmailAddress
 from application.dtos.user.authenticate_user_command import AuthenticateUserCommand
 from application.dtos.user.authentication_result import AuthenticationResult
-from application.exceptions.auth_exceptions import InvalidCredentialsError, InactiveUserError
+from application.exceptions.user_exceptions import InvalidCredentialsError, InactiveUserError
 from application.interfaces.password_hasher import IPasswordHasher
 from application.interfaces.token_service import ITokenService
 

@@ -7,10 +7,8 @@ from domain.interfaces.conversation_repository import IConversationRepository
 from domain.interfaces.customer_repository import ICustomerRepository
 from domain.interfaces.user_repository import IUserRepository
 from application.dtos.conversation.create_conversation_command import CreateConversationCommand
-from application.exceptions.message_exceptions import (
-    CustomerNotFoundError,
-    UserNotFoundError
-)
+from application.exceptions.message_exceptions import CustomerNotFoundError
+from application.exceptions.user_exceptions import UserNotFoundError
 
 class CreateConversation:
     def __init__(

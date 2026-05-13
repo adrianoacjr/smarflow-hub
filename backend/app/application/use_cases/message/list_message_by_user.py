@@ -2,7 +2,7 @@ from domain.interfaces.message_repository import IMessageRepository
 from domain.interfaces.user_repository import IUserRepository
 from application.dtos.message.list_messages_query import ListMessagesByUserQuery
 from application.dtos.message.message_list_result import MessageListResult
-from application.exceptions.message_exceptions import UserNotFoundError
+from application.exceptions.user_exceptions import UserNotFoundError
 
 class ListMessageByUser:
     def __init__(

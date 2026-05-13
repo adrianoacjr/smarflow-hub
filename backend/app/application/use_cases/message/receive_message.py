@@ -8,10 +8,8 @@ from domain.interfaces.message_repository import IMessageRepository
 from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.message_content import MessageContent
 from application.dtos.message.receive_message_command import ReceiveMessageCommand
-from application.exceptions.message_exceptions import (
-    MessageValidationError,
-    UserNotFoundError
-)
+from application.exceptions.message_exceptions import MessageValidationError
+from application.exceptions.user_exceptions import UserNotFoundError
 from application.use_cases.customer.get_or_create_customer import GetOrCreateCustomer
 
 class ReceiveMessage:

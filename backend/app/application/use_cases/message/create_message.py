@@ -9,10 +9,8 @@ from domain.interfaces.message_repository import IMessageRepository
 from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.message_content import MessageContent
 from application.dtos.message.create_message_command import CreateMessageCommand
-from application.exceptions.message_exceptions import (
-    CustomerNotFoundError,
-    UserNotFoundError
-)
+from application.exceptions.message_exceptions import CustomerNotFoundError
+from application.exceptions.user_exceptions import UserNotFoundError
 
 class CreateMessage:
     def __init__(

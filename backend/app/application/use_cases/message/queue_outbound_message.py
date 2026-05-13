@@ -9,10 +9,8 @@ from domain.interfaces.message_repository import IMessageRepository
 from domain.interfaces.user_repository import IUserRepository
 from domain.value_objects.message_content import MessageContent
 from application.dtos.message.queue_outbound_message_command import QueueOutboundMessageCommand
-from application.exceptions.message_exceptions import (
-    CustomerNotFoundError,
-    UserNotFoundError
-)
+from application.exceptions.message_exceptions import CustomerNotFoundError
+from application.exceptions.user_exceptions import UserNotFoundError
 
 class QueueOutboundMessage:
     def __init__(
