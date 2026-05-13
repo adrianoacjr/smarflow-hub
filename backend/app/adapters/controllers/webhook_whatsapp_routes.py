@@ -21,7 +21,7 @@ async def verify_whatsapp_webhook(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid verify token")
     return int(hub_challenge)
 
-@router.get("/whatsapp", status_code=status.HTTP_200_OK)
+@router.post("/whatsapp", status_code=status.HTTP_200_OK)
 async def receive_whatsapp(
     payload: WhatsAppWebhookDTO,
     session: AsyncSession = Depends(get_session),
