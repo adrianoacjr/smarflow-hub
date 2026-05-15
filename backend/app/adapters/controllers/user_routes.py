@@ -1,16 +1,14 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from application.dtos.user.create_user_command import CreateUserCommand
 from adapters.dtos.user_dto import UserCreateDTO, UserResponseDTO
 from infrastructure.database import get_session
 from infrastructure.dependencies.di_user import (
     get_create_user,
     get_get_user,
     get_list_users,
-    get_update_user,
-    get_deactivate_user,
     get_delete_user,
-    get_change_user_password,
 )
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -21,12 +19,16 @@ async def create(
     session: AsyncSession = Depends(get_session)
 ):
     use_case = get_create_user(session)
-    user = await use_case.execute(
+    command = CreateUserCommand(
+        client_id=body.client_id,
         name=body.name,
         email=body.email,
         password=body.password,
         access_level=body.access_level,
+        user_type=body.user_type,
+        system_prompt=body.system_prompt,
     )
+    user = await use_case.execute(command)
     return UserResponseDTO.from_domain(user)
 
 @router.get("/{user_id}", response_model=UserResponseDTO)
