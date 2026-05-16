@@ -19,7 +19,7 @@ class CreateUser:
     async def execute(self, command: CreateUserCommand) -> User:
         email = EmailAddress(command.email)
 
-        existing_user = await self.repo.get_by_email(email)
+        existing_user = await self.repo.get_by_email_only(email)
         if existing_user is not None:
             raise UserAlreadyExistsError("A user with this email already exists")
         

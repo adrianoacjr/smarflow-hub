@@ -11,4 +11,3 @@ class CreateUserCommand:
     password: str
     access_level: AccessLevel
     user_type: UserType = UserType.HUMAN
-    system_prompt: str
