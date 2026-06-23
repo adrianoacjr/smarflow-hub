@@ -1,25 +1,24 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
-
+from uuid import UUID, uuid4
 from domain.enums.access_level import AccessLevel
 from domain.enums.user_type import UserType
 from domain.value_objects.email_address import EmailAddress
-from domain.value_objects.channel_bindings import ChannelBinding
+from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class User:
-    client_id: int
-    name: str
-    email: EmailAddress
-    password_hash: str = field(repr=False)
-    access_level: AccessLevel
-    user_type: UserType
-    created_at: datetime
+    id: UUID = field(default_factory=uuid4)
+    client_id: UUID = None
+    name: str = ""
+    email: EmailAddress = None
+    password_hash: str = ""
+    access_level: AccessLevel = None
+    user_type: UserType = None
     active: bool = True
     system_prompt: Optional[str] = None
-    id: Optional[int] = None
-    channel_bindings: tuple[ChannelBinding, ...] = field(default_factory=tuple)
+    created_at: datetime = field(default_factory=utcnow)
 
     @property
     def is_bot(self) -> bool:
