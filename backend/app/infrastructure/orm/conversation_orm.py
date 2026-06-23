@@ -1,42 +1,36 @@
 import uuid
-
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer
-from sqlalchemy.dialects.postgresql import UUID as PGUUID
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from infrastructure.orm.base import Base
 
-
 class ConversationORM(Base):
     __tablename__ = "conversations"
 
-    id = Column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    client_id = Column(Integer, ForeignKey("client.id"), nullable=False, index=True)
-    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
-    bot_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    assigned_agent_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    source = Column(
-        Enum("whatsapp", "instagram", "system", name="message_source_enum"),
-        nullable=False,
-    )
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    client_id = Column(UUID(as_uuid=True), ForeignKey("client.id"), nullable=False, index=True)
+    customer_id = Column(UUID(as_uuid=True), ForeignKey("customers.id"), nullable=False, index=True)
+    bot_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    assigned_agent_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     status = Column(
         Enum(
+            "open",
             "bot_handling",
             "escalated",
             "human_handling",
-            "resolved",
-            "abandoned",
+            "closed",
             name="conversation_status_enum",
         ),
         nullable=False,
+        default="open",
     )
-    created_at = Column(DateTime(timezone=True), nullable=False)
-    updated_at = Column(DateTime(timezone=True), nullable=False)
-    resolved_at = Column(DateTime(timezone=True), nullable=True)
+    channel = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(),
+                        onupdate=func.now())
 
-    client = relationship("ClientORM", back_populates="conversations")
-    customer = relationship("CustomerORM", back_populates="conversations")
     bot_user = relationship(
         "UserORM",
         back_populates="bot_conversations",
@@ -47,9 +41,12 @@ class ConversationORM(Base):
         back_populates="agent_conversations",
         foreign_keys=[assigned_agent_id],
     )
-
     messages = relationship(
         "MessageORM",
-        foreign_keys="[MessageORM.conversation_id]",
         back_populates="conversation",
+        cascade="all, delete-orphan"
+    )
+    customer = relationship(
+        "CustomerORM",
+        back_populates="conversations"
     )

@@ -22,7 +22,7 @@ class ClientMapper:
             id=domain.id,
             name=domain.name,
             email=domain.email.value,
-            plan=domain.plan.value,
+            plan=domain.plan,
             api_key_hash=domain.api_key_hash,
             active=domain.active,
             created_at=domain.created_at,

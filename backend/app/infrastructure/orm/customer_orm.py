@@ -1,20 +1,17 @@
+import uuid
 from sqlalchemy import Column, Integer, String, DateTime, ARRAY, Enum, ForeignKey, UniqueConstraint
-from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from infrastructure.orm.base import Base
 
 class CustomerORM(Base):
     __tablename__ = "customers"
-    __table_args__ = (
-        UniqueConstraint("client_id", "email", name="uq_customers_client_email"),
-        UniqueConstraint("client_id", "phone", name="uq_customers_client_phone"),
-    )
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    client_id = Column(Integer, ForeignKey("client.id"), nullable=False, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    client_id = Column(UUID(as_uuid=True), ForeignKey("client.id"), nullable=False, index=True)
     name = Column(String, nullable=False)
-    email = Column(String, index=True, nullable=True)
     phone = Column(String, index=True, nullable=True)
     origin = Column(
         Enum(
@@ -26,14 +23,7 @@ class CustomerORM(Base):
         ),
         nullable=False
     )
-    source = Column(
-        Enum("whatsapp", "instagram", "system", name="customer_source_enum"),
-        nullable=True,
-    )
-    source_ref = Column(String, nullable=True, index=True)
-    tags = Column(ARRAY(String), nullable=True, default=list)
+    external_red = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    client = relationship("ClientORM", back_populates="customers")
-    messages = relationship("MessageORM", back_populates="customer")
     conversations = relationship("ConversationORM", back_populates="customer")

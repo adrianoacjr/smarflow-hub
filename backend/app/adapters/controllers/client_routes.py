@@ -51,8 +51,8 @@ async def create_client(
             name=client.name,
             email=str(client.email),
             plan=client.plan,
-            is_active=client.is_active,
-            created_at=client.create_at,
+            is_active=client.active,
+            created_at=client.created_at,
             api_key=raw_api_key,
         )
     except ClientAlreadyExistsError as e:
@@ -92,7 +92,7 @@ async def get_client(
         name=client.name,
         email=str(client.email),
         plan=client.plan,
-        is_active=client.is_active,
+        is_active=client.active,
         created_at=client.created_at,
     )
 
@@ -110,7 +110,7 @@ async def update_client(
         id=client.id,
         name=client.name,email=str(client.email),
         plan=client.plan,
-        is_active=client.is_active,
+        is_active=client.active,
         created_at=client.created_at,
     )
 
@@ -129,7 +129,7 @@ async def change_plan(
         name=client.name,
         email=str(client.email),
         plan=client.plan,
-        is_active=client.is_active,
+        is_active=client.active,
         created_at=client.created_at,
     )
 
@@ -147,7 +147,7 @@ async def deactivate_client(
         name=client.name,
         email=str(client.email),
         plan=client.plan,
-        is_active=client.is_active,
+        is_active=client.active,
         created_at=client.created_at,
     )
 

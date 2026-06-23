@@ -1,11 +1,10 @@
 import uuid
-
 from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint, Text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from infrastructure.orm.base import Base
-
 
 class UserORM(Base):
     __tablename__ = "users"
@@ -13,8 +12,8 @@ class UserORM(Base):
         UniqueConstraint("client_id", "email", name="uq_users_client_email"),
     )
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    client_id = Column(Integer, ForeignKey("client.id"), nullable=False, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    client_id = Column(UUID(as_uuid=True), ForeignKey("client.id"), nullable=False, index=True)
     name = Column(String, nullable=False)
     email = Column(String, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
