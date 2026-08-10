@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 from typing import Optional
 
 from domain.entities.client import Client
@@ -14,7 +15,7 @@ class IClientRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def get_by_id(self, client_id: int) -> Optional[Client]:
+    async def get_by_id(self, client_id: UUID) -> Optional[Client]:
         raise NotImplementedError
     
     @abstractmethod
@@ -34,5 +35,5 @@ class IClientRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def delete(self, client_id: int) -> bool:
+    async def delete(self, client_id: UUID) -> bool:
         raise NotImplementedError
