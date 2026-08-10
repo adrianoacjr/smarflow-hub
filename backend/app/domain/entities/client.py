@@ -1,8 +1,11 @@
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Optional
 from uuid import UUID, uuid4
+
 from domain.enums.client_plan import ClientPlan
 from domain.value_objects.email_address import EmailAddress
+from domain.value_objects.phone_number import PhoneNumber
 from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
@@ -14,6 +17,7 @@ class Client:
     api_key_hash: str = ""
     active: bool = True
     created_at: datetime = field(default_factory=utcnow)
+    phone: Optional[PhoneNumber] = None
 
     def deactivate(self) -> None:
         self.active = False

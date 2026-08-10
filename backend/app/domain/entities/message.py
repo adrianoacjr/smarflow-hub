@@ -7,6 +7,7 @@ from domain.enums.message_direction import MessageDirection
 from domain.enums.message_source import MessageSource
 from domain.enums.message_status import MessageStatus
 from domain.value_objects.message_content import MessageContent
+from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class MessageAttachment:
@@ -16,15 +17,13 @@ class MessageAttachment:
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Message:
-    customer_id: int
+    conversation_id: UUID = None
     direction: MessageDirection
     source: MessageSource
-    created_at: datetime
+    created_at: datetime = field(default_factory=utcnow)
     automated: bool
     status: MessageStatus
     content: MessageContent | None = None
-    user_id: Optional[int] = None
-    conversation_id: Optional[UUID] = None
     attachments: list[MessageAttachment] = field(default_factory=list)
     id: Optional[UUID] = field(default_factory=uuid4)
 

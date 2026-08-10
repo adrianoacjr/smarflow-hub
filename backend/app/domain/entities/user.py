@@ -2,9 +2,11 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 from uuid import UUID, uuid4
+
 from domain.enums.access_level import AccessLevel
 from domain.enums.user_type import UserType
 from domain.value_objects.email_address import EmailAddress
+from domain.value_objects.phone_number import PhoneNumber
 from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
@@ -17,8 +19,9 @@ class User:
     access_level: AccessLevel = None
     user_type: UserType = None
     active: bool = True
-    system_prompt: Optional[str] = None
     created_at: datetime = field(default_factory=utcnow)
+    phone: Optional[PhoneNumber] = None
+    system_prompt: Optional[str] = None
 
     @property
     def is_bot(self) -> bool:

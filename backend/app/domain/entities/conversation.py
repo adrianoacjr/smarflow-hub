@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from domain.enums.conversation_status import ConversationStatus
 from domain.enums.message_source import MessageSource
@@ -9,16 +9,15 @@ from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Conversation:
-    client_id: int
-    customer_id: int
-    bot_user_id: int
+    user_id: UUID = None
+    customer_id: UUID = None
     source: MessageSource
     status: ConversationStatus
-    created_at: datetime
+    created_at: datetime = field(default_factory=utcnow)
     updated_at: datetime
-    assigned_agent_id: Optional[int] = None
+    assigned_user_id: Optional[UUID] = None
     resolved_at: Optional[datetime] = None
-    id: Optional[UUID] = None
+    id: Optional[UUID] = field(default_factory=uuid4)
 
     def escalate(self, reason: str | None = None) -> None:
         if self.status not in {
