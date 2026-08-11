@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional
+from uuid import UUID
 
 @dataclass(frozen=True, slots=True)
 class UpdateClientCommand:
-    client_id: int
-    name: Optional[str] = None
-    email: Optional[str] = None
+    client_id: UUID
+    name: str | None = None
+    email: str | None = None
+    phone: str | None = None

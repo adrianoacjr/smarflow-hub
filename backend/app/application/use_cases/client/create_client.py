@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from domain.entities.client import Client
 from domain.interfaces.client_repository import IClientRepository
 from domain.value_objects.email_address import EmailAddress
+from domain.value_objects.phone_number import PhoneNumber
 from application.dtos.client.create_client_command import CreateClientCommand
 from application.exceptions.client_exceptions import ClientAlreadyExistsError
 
@@ -20,6 +21,12 @@ class CreateClient:
             raise ClientAlreadyExistsError(
                 f"A client with email '{command.email}' already exists."
             )
+
+        phone = (
+            PhoneNumber(command.phone)
+            if command.phone is not None
+            else None
+        )
         
         raw_api_key = secrets.token_urlsafe(32)
         api_key_hash = hashlib.sha256(raw_api_key.encode()).hexdigest()
@@ -29,7 +36,7 @@ class CreateClient:
             email=email,
             plan=command.plan,
             api_key_hash=api_key_hash,
-            created_at=datetime.now(timezone.utc),
+            phone=phone,
         )
 
         saved = await self.repo.create(client)

@@ -1,4 +1,4 @@
-from typing import Optional
+from uuid import UUID
 
 from domain.entities.client import Client
 from domain.interfaces.client_repository import IClientRepository
@@ -8,8 +8,9 @@ class GetClient:
     def __init__(self, repo: IClientRepository) -> None:
         self.repo = repo
 
-    async def execute(self, client_id: int) -> Client:
+    async def execute(self, client_id: UUID) -> Client:
         client = await self.repo.get_by_id(client_id)
+
         if client is None:
             raise ClientNotFoundError(f"Client '{client_id}' not found.")
         return client

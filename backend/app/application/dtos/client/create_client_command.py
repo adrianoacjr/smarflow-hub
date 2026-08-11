@@ -7,3 +7,4 @@ class CreateClientCommand:
     name: str
     email: str
     plan: ClientPlan = ClientPlan.FREE
+    phone: str | None = None

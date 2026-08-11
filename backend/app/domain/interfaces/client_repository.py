@@ -9,7 +9,7 @@ class IClientRepository(ABC):
     @abstractmethod
     async def create(self, client: Client) -> Client:
         raise NotImplementedError
-    
+
     @abstractmethod
     async def update( self, client: Client) -> Client:
         raise NotImplementedError
