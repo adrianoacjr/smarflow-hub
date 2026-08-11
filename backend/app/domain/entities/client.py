@@ -17,6 +17,7 @@ class Client:
     api_key_hash: str = ""
     active: bool = True
     created_at: datetime = field(default_factory=utcnow)
+    updated_at: datetime = field(default_factory=utcnow)
     phone: Optional[PhoneNumber] = None
 
     def deactivate(self) -> None:
