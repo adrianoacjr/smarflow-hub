@@ -20,6 +20,7 @@ class User:
     user_type: UserType = None
     active: bool = True
     created_at: datetime = field(default_factory=utcnow)
+    updated_at: datetime = field(default_factory=utcnow)
     phone: Optional[PhoneNumber] = None
     system_prompt: Optional[str] = None
 

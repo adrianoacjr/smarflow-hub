@@ -16,6 +16,7 @@ class Customer:
     name: str = ""
     origin: CustomerOrigin
     created_at: datetime = field(default_factory=utcnow)
+    updated_at: datetime = field(default_factory=utcnow)
     tags: list[CustomerTag] = field(default_factory=list)
     active: bool = True
     source: Optional[MessageSource] = None

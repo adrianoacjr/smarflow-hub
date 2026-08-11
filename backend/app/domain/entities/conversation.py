@@ -9,7 +9,7 @@ from domain.utils.time import utcnow
 
 @dataclass(eq=False, slots=True, kw_only=True)
 class Conversation:
-    clint_id: UUID
+    client_id: UUID
     user_id: UUID
     customer_id: UUID
     bot_user_id: UUID
@@ -29,14 +29,14 @@ class Conversation:
                 f"Cannot escalate conversation in status '{self.status}'"
             )
         self.status = ConversationStatus.ESCALATED
-        self.updated_at = _utcnow()
+        self.updated_at = utcnow()
 
     def assign_agent(self, agent_id: UUID) -> None:
         if self.status != ConversationStatus.ESCALATED:
             raise ValueError("Conversation must be escalated before assigning an agent")
         self.user_id = agent_id
         self.status = ConversationStatus.HUMAN_HANDLING
-        self.updated_at = _utcnow()
+        self.updated_at = utcnow()
 
     def return_to_bot(self) -> None:
         if self.status not in {
@@ -48,20 +48,20 @@ class Conversation:
             )
         self.user_id = self.bot_user_id
         self.status = ConversationStatus.BOT_HANDLING
-        self.updated_at = _utcnow()
+        self.updated_at = utcnow()
 
     def resolve(self) -> None:
         if self.status == ConversationStatus.RESOLVED:
             return
         self.status = ConversationStatus.RESOLVED
-        self.resolved_at = _utcnow()
+        self.resolved_at = utcnow()
         self.updated_at = self.resolved_at
 
     def abandon(self) -> None:
         if self.status == ConversationStatus.RESOLVED:
             raise ValueError("Cannot abandon a resolved conversation")
         self.status = ConversationStatus.ABANDONED
-        self.updated_at = _utcnow()
+        self.updated_at = utcnow()
 
     @property
     def is_bot_active(self) -> bool:
@@ -70,7 +70,3 @@ class Conversation:
     @property
     def needs_human(self) -> bool:
         return self.status == ConversationStatus.ESCALATED
-    
-def _utcnow() -> datetime:
-    from datetime import timezone
-    return datetime.now(timezone.utc)
