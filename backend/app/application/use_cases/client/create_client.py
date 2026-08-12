@@ -1,11 +1,11 @@
 import secrets
 import hashlib
-from datetime import datetime, timezone
 
 from domain.entities.client import Client
 from domain.interfaces.client_repository import IClientRepository
 from domain.value_objects.email_address import EmailAddress
 from domain.value_objects.phone_number import PhoneNumber
+from application.dtos.client.client_item import ClientItem
 from application.dtos.client.create_client_command import CreateClientCommand
 from application.exceptions.client_exceptions import ClientAlreadyExistsError
 
@@ -13,7 +13,7 @@ class CreateClient:
     def __init__(self, repo: IClientRepository) -> None:
         self.repo = repo
     
-    async def execute(self, command: CreateClientCommand) -> tuple[Client, str]:
+    async def execute(self, command: CreateClientCommand) -> tuple[ClientItem, str]:
         email = EmailAddress(command.email)
 
         existing = await self.repo.get_by_email(email)
@@ -41,4 +41,4 @@ class CreateClient:
 
         saved = await self.repo.create(client)
 
-        return saved, raw_api_key
+        return ClientItem.from_entity(saved), raw_api_key

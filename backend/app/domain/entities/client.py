@@ -22,9 +22,11 @@ class Client:
 
     def deactivate(self) -> None:
         self.active = False
+        self.updated_at = utcnow()
 
     def activate(self) -> None:
         self.active = True
+        self.updated_at = utcnow()
 
     def upgrade_plan(self, new_plan: ClientPlan) -> None:
         if new_plan.value <= self.plan.value:
@@ -32,13 +34,15 @@ class Client:
                 f"Use change_plan() para downgrade. "
                 f"Plano atual: {self.plan}, solicitando: {new_plan}"
             )
-        self.plan = new_plan
+        self.change_plan(new_plan)
 
     def change_plan(self, new_plan: ClientPlan) -> None:
         self.plan = new_plan
+        self.updated_at = utcnow()
 
     def rename(self, name: str) -> None:
         self.name = name.strip()
+        self.updated_at = utcnow()
 
     def change_email(self, email: EmailAddress) -> None:
         self.email = email
