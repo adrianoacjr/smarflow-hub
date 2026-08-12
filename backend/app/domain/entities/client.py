@@ -36,3 +36,14 @@ class Client:
 
     def change_plan(self, new_plan: ClientPlan) -> None:
         self.plan = new_plan
+
+    def rename(self, name: str) -> None:
+        self.name = name.strip()
+
+    def change_email(self, email: EmailAddress) -> None:
+        self.email = email
+        self.updated_at = utcnow()
+
+    def change_phone(self, phone: PhoneNumber | None) -> None:
+        self.phone = phone
+        self.updated_at = utcnow()

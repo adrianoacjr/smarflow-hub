@@ -1,13 +1,13 @@
 from domain.interfaces.client_repository import IClientRepository
 from application.dtos.client.client_item import ClientItem
-from application.dtos.client.list_clients_query import ListClientQuery
+from application.dtos.client.list_clients_query import ListClientsQuery
 from application.dtos.client.list_clients_result import ListClientsResult
 
 class GetAllClients:
     def __init__(self, repo: IClientRepository) -> None:
         self.repo = repo
 
-    async def execute(self, query: ListClientQuery) -> ListClientsResult:
+    async def execute(self, query: ListClientsQuery) -> ListClientsResult:
         clients = await self.repo.list(
             limit=query.limit,
             offset=query.offset,

@@ -16,15 +16,12 @@ class UpdateClient:
         client = await self.repo.get_by_id(command.client_id)
 
         if client is None:
-            raise ClientNotFoundError(f"Client '{command.client_id}' not found.")
-
-        if client is None:
             raise ClientNotFoundError(
                 f"Client '{command.client_id}' not found."
             )
 
         if command.name is not None:
-            client.name = command.name.strip()
+            client.rename(command.name)
 
         if command.email is not None:
             new_email = EmailAddress(command.email)
@@ -35,9 +32,9 @@ class UpdateClient:
                     f"Email '{command.email}' is already in use."
                 )
 
-            client.email = new_email
+            client.change_email(new_email)
 
         if command.phone is not None:
-            client.phone = PhoneNumber(command.phone)
+            client.change_phone(PhoneNumber(command.phone))
         
         return await self.repo.update(client)
