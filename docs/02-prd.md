@@ -25,11 +25,11 @@ Evidências da direção atual: `README.md`; entidades em `backend/app/domain/en
 
 ### 1.2 Objetivos
 
-- **[IMPLEMENTADO]** Disponibilizar uma API organizada por clientes/tenants, usuários, clientes finais, conversas e mensagens.
-- **[IMPLEMENTADO]** Receber um payload simplificado de WhatsApp, analisar conteúdo com OpenAI e enviar texto pela Graph API.
-- **[PARCIAL/PREVISTO]** Alternar uma conversa entre atendimento automatizado e humano.
-- **[PARCIAL/PREVISTO]** Administrar tenants, usuários/bots, clientes finais e conversas por uma interface web.
-- **[PROPOSTA]** Entregar um MVP seguro e observável no qual uma organização configure um número WhatsApp, receba mensagens, responda por bot e assuma conversas manualmente sem vazamento entre tenants.
+- Disponibilizar uma API organizada por clientes/tenants, usuários, clientes finais, conversas e mensagens.
+- Receber um payload simplificado de WhatsApp, analisar conteúdo com OpenAI e enviar texto pela Graph API.
+- Alternar uma conversa entre atendimento automatizado e humano.
+- Administrar tenants, usuários/bots, clientes finais e conversas por uma interface web.
+- Entregar um MVP seguro e observável no qual uma organização configure um número WhatsApp, receba mensagens, responda por bot e assuma conversas manualmente sem vazamento entre tenants.
 
 ### 1.3 Objetivos mensuráveis propostos
 
@@ -45,15 +45,15 @@ Dependem de aprovação de produto e operação:
 
 ### 2.1 Público-alvo inferido
 
-**[INFERÊNCIA A VALIDAR]** Pequenas e médias organizações que recebem atendimento recorrente pelo WhatsApp e precisam combinar automação com operadores humanos. O código modela `Client` como tenant, usuários `BOT`/`HUMAN`, clientes finais, conversas e mensagens (`domain/entities/`).
+Pequenas e médias organizações que recebem atendimento recorrente pelo WhatsApp e precisam combinar automação com operadores humanos. O código modela `Client` como tenant, usuários `BOT`/`HUMAN`, clientes finais, conversas e mensagens (`domain/entities/`).
 
 ### 2.2 Usuários do sistema
 
-- **Administrador da plataforma:** provisiona tenants e planos. **[PARCIAL]** Há API de clientes, sem autorização aplicada.
-- **Administrador do tenant:** configura usuários, bots, canais e políticas. **[PARCIAL/PROPOSTA]** Modelos existem; jornada administrativa não está completa.
-- **Agente de atendimento:** acompanha, assume e resolve conversas. **[PARCIAL]** Domínio/casos de uso existem; UI e atribuição HTTP estão incompletas.
-- **Cliente final:** conversa pelo WhatsApp. **[PARCIAL]** Entrada e resposta existem em código, mas o payload não é o nativo da Meta.
-- **Sistema integrador:** usa API key/webhook. **[PARCIAL/PROPOSTA]** API key é gerada, mas não é validada em middleware.
+- **Administrador da plataforma:** provisiona tenants e planos. Há API de clientes, sem autorização aplicada.
+- **Administrador do tenant:** configura usuários, bots, canais e políticas.
+- **Agente de atendimento:** acompanha, assume e resolve conversas.
+- **Cliente final:** conversa pelo WhatsApp.
+- **Sistema integrador:** usa API key/webhook.
 
 ### 2.3 Problemas a resolver
 
@@ -62,8 +62,6 @@ Dependem de aprovação de produto e operação:
 - Necessidade de encaminhar exceções ao humano preservando contexto.
 - Administração multiempresa com isolamento de dados.
 - Visibilidade do estado de conversas e mensagens.
-
-Os dois últimos são necessidades coerentes com o modelo, mas sua priorização deve ser validada.
 
 ## 3. Escopo e funcionalidades
 
@@ -94,7 +92,7 @@ Os dois últimos são necessidades coerentes com o modelo, mas sua priorização
 - Frontend autenticado para operação.
 - Redis e worker Celery/RQ, Instagram, campanhas, fluxos, templates, dashboard, métricas, NGINX e CI/CD citados no `README.md`, mas sem implementação encontrada.
 
-### 3.3 Novas propostas sujeitas a aprovação
+### 3.3 Novas propostas
 
 - Inbox unificada com fila, busca, filtros e atualização em tempo real.
 - Política configurável de automação/escalonamento.
@@ -139,13 +137,13 @@ Os dois últimos são necessidades coerentes com o modelo, mas sua priorização
 
 ### 5.1 Implementadas ou parcialmente implementadas
 
-- Como administrador da plataforma, quero criar um tenant e receber sua API key para provisioná-lo. **[IMPLEMENTADO COM DEFEITOS]**
-- Como usuário, quero autenticar com e-mail e senha para receber um token. **[IMPLEMENTADO COM DEFEITO PROVÁVEL]**
-- Como administrador do tenant, quero cadastrar humanos e bots. **[PARCIAL]**
-- Como sistema, quero relacionar um número de canal a um bot para rotear webhooks. **[PARCIAL]**
-- Como cliente final, quero enviar uma mensagem e obter resposta automatizada. **[PARCIAL]**
-- Como bot, quero escalar uma conversa que requer humano. **[PARCIAL]**
-- Como agente, quero resolver uma conversa. **[PARCIAL]**
+- Como administrador da plataforma, quero criar um tenant e receber sua API key para provisioná-lo.
+- Como usuário, quero autenticar com e-mail e senha para receber um token.
+- Como administrador do tenant, quero cadastrar humanos e bots.
+- Como sistema, quero relacionar um número de canal a um bot para rotear webhooks.
+- Como cliente final, quero enviar uma mensagem e obter resposta automatizada.
+- Como bot, quero escalar uma conversa que requer humano.
+- Como agente, quero resolver uma conversa.
 
 ### 5.2 Propostas
 
@@ -161,41 +159,41 @@ Os dois últimos são necessidades coerentes com o modelo, mas sua priorização
 
 ### Identidade e tenancy
 
-- **RF-001 [IMPLEMENTADO/PARCIAL]** Autenticar usuário por e-mail/senha e emitir JWT.
-- **RF-002 [PROPOSTA]** Validar JWT em toda rota não pública.
-- **RF-003 [PROPOSTA]** Derivar tenant da identidade/credencial, nunca confiar apenas em `client_id` enviado.
-- **RF-004 [PROPOSTA]** Aplicar permissões por papel e registrar ações sensíveis.
+- **RF-001** Autenticar usuário por e-mail/senha e emitir JWT.
+- **RF-002** Validar JWT em toda rota não pública.
+- **RF-003** Derivar tenant da identidade/credencial, nunca confiar apenas em `client_id` enviado.
+- **RF-004** Aplicar permissões por papel e registrar ações sensíveis.
 
 ### Administração
 
-- **RF-010 [IMPLEMENTADO COM DEFEITOS]** Administrar tenants, status e plano.
-- **RF-011 [PARCIAL]** Administrar usuários humanos/bots, senha, status e prompt.
-- **RF-012 [PARCIAL]** Vincular/desvincular credenciais de canal a bots.
-- **RF-013 [PROPOSTA]** Exibir API key/segredo apenas na criação e permitir rotação/revogação.
+- **RF-010** Administrar tenants, status e plano.
+- **RF-011** Administrar usuários humanos/bots, senha, status e prompt.
+- **RF-012** Vincular/desvincular credenciais de canal a bots.
+- **RF-013** Exibir API key/segredo apenas na criação e permitir rotação/revogação.
 
 ### Clientes, conversas e mensagens
 
-- **RF-020 [PARCIAL]** Criar/localizar cliente final por referência única de canal dentro do tenant.
-- **RF-021 [PARCIAL]** Criar e consultar conversas isoladas por tenant.
-- **RF-022 [PARCIAL]** Escalar, atribuir, resolver e devolver conversa ao bot.
-- **RF-023 [PARCIAL]** Persistir mensagens inbound/outbound com direção, origem, estado, conteúdo/anexos e conversa.
-- **RF-024 [PROPOSTA]** Impedir dois agentes de assumirem simultaneamente a mesma conversa.
-- **RF-025 [PROPOSTA]** Registrar callbacks de envio, entrega, leitura e falha.
+- **RF-020** Criar/localizar cliente final por referência única de canal dentro do tenant.
+- **RF-021** Criar e consultar conversas isoladas por tenant.
+- **RF-022** Escalar, atribuir, resolver e devolver conversa ao bot.
+- **RF-023** Persistir mensagens inbound/outbound com direção, origem, estado, conteúdo/anexos e conversa.
+- **RF-024** Impedir dois agentes de assumirem simultaneamente a mesma conversa.
+- **RF-025** Registrar callbacks de envio, entrega, leitura e falha.
 
 ### Canais e IA
 
-- **RF-030 [PARCIAL]** Validar e receber webhook WhatsApp.
-- **RF-031 [PROPOSTA]** Aceitar o payload oficial da Meta, validar assinatura e deduplicar por ID externo.
-- **RF-032 [IMPLEMENTADO/PARCIAL]** Gerar resposta OpenAI com prompt global ou do bot.
-- **RF-033 [PROPOSTA]** Tornar política de resposta/escalonamento explícita e configurável.
-- **RF-034 [PROPOSTA]** Processar IA/envio de modo assíncrono com retentativas limitadas.
+- **RF-030** Validar e receber webhook WhatsApp.
+- **RF-031** Aceitar o payload oficial da Meta, validar assinatura e deduplicar por ID externo.
+- **RF-032** Gerar resposta OpenAI com prompt global ou do bot.
+- **RF-033** Tornar política de resposta/escalonamento explícita e configurável.
+- **RF-034** Processar IA/envio de modo assíncrono com retentativas limitadas.
 
 ### Interface
 
-- **RF-040 [PARCIAL]** Disponibilizar aplicação web e tema.
-- **RF-041 [PROPOSTA]** Login/logout e renovação/expiração de sessão.
-- **RF-042 [PROPOSTA]** Inbox, histórico, composição de mensagem, filtros e estados vazios/erro.
-- **RF-043 [PROPOSTA]** Administração conforme papel.
+- **RF-040** Disponibilizar aplicação web e tema.
+- **RF-041** Login/logout e renovação/expiração de sessão.
+- **RF-042** Inbox, histórico, composição de mensagem, filtros e estados vazios/erro.
+- **RF-043** Administração conforme papel.
 
 ## 7. Requisitos não funcionais
 
@@ -204,10 +202,10 @@ Os dois últimos são necessidades coerentes com o modelo, mas sua priorização
 - **RNF-003 Confiabilidade:** webhook deve ser idempotente; mensagens não podem duplicar por retry.
 - **RNF-004 Consistência:** operações de persistência/estado devem ser transacionais; atribuição deve usar controle concorrente.
 - **RNF-005 Observabilidade:** logs estruturados com correlation ID, métricas de fila/latência/falha e alertas, sem PII desnecessária.
-- **RNF-006 Desempenho [PENDENTE]:** metas de API, webhook, inbox e IA precisam ser aprovadas.
-- **RNF-007 Disponibilidade [PENDENTE]:** SLO, RPO e RTO precisam ser aprovados.
-- **RNF-008 Acessibilidade [PROPOSTA]:** frontend conforme WCAG 2.1 AA.
-- **RNF-009 Compatibilidade [PROPOSTA]:** duas últimas versões estáveis de Chrome, Edge, Firefox e Safari.
+- **RNF-006 Desempenho:** metas de API, webhook, inbox e IA precisam ser aprovadas.
+- **RNF-007 Disponibilidade:** SLO, RPO e RTO precisam ser aprovados.
+- **RNF-008 Acessibilidade** frontend conforme WCAG 2.1 AA.
+- **RNF-009 Compatibilidade:** duas últimas versões estáveis de Chrome, Edge, Firefox e Safari.
 - **RNF-010 Evolução:** OpenAPI e migrations versionadas; testes bloqueiam regressões contratuais.
 - **RNF-011 Privacidade:** retenção configurada/definida, criptografia em trânsito e proteção adequada em repouso.
 
@@ -335,8 +333,6 @@ Estados mínimos de UI propostos: carregando, vazio inicial, vazio filtrado, off
 - Omnichannel além de WhatsApp.
 - Construtor visual completo de automações.
 - Billing automatizado.
-
-Essa delimitação é proposta e requer aprovação.
 
 ## 13. Pendências de decisão humana
 
